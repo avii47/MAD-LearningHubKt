@@ -65,7 +65,6 @@ fun LocationsScreen() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .padding(16.dp)
-
         )
     }
 
@@ -82,7 +81,7 @@ fun LocationsScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(top = 100.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                .padding(top = 60.dp, start = 16.dp, end = 16.dp, bottom = 100.dp),
             cameraPositionState = cameraPositionState,
             onMapLoaded = {
                 isMapLoaded = true
