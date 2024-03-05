@@ -49,12 +49,11 @@ import com.example.mad_learninghubkt.ui.theme.PurpleStart
 @Preview
 @Composable
 fun HomeScreen() {
-    Scaffold (
+    Scaffold(
         bottomBar = {
-            BottomNavigation()
+            Spacer(modifier = Modifier.height(80.dp))
         }
     ) { padding ->
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -316,7 +315,7 @@ fun CourseSection() {
     }
 }
 
-    @Composable
+@Composable
 fun CourseItem(
         index: Int
     ) {

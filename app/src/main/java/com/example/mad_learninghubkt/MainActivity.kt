@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MADLearningHubKtTheme {
                 SetBarColor(color = MaterialTheme.colorScheme.background)
-                HomeScreen()
+                MainScreen()
             }
         }
     }

@@ -2,57 +2,55 @@ package com.example.mad_learninghubkt
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.example.mad_learninghubkt.data.BottomNavigationItem
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
-val items = listOf(
-    BottomNavigationItem(
-        title = "Home",
-        icon = Icons.Rounded.Home
-    ),
-
-    BottomNavigationItem(
-        title = "Locations",
-        icon = Icons.Rounded.LocationOn
-    ),
-
-    BottomNavigationItem(
-        title = "Account",
-        icon = Icons.Rounded.AccountCircle
-    )
-)
 
 @Composable
-fun BottomNavigation() {
+fun BottomNavigation(navController: NavHostController) {
+    val screens = listOf(
+        BottomBarScreen.Home,
+        BottomBarScreen.Locations,
+        BottomBarScreen.Account
+    )
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
     NavigationBar {
         Row(
             modifier = Modifier.background(MaterialTheme.colorScheme.inverseOnSurface)
         ) {
 
-            items.forEachIndexed { index, item ->
+            screens.forEach { screen ->
                 NavigationBarItem(
-                    selected = index == 0,
-                    onClick = {},
+                    selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                    onClick = {
+                        navController.navigate(screen.route) {
+                            popUpTo(navController.graph.findStartDestination().id)
+                            launchSingleTop = true
+                        }
+                    },
                     icon = {
                         Icon(
-                            imageVector = item.icon,
-                            contentDescription = item.title,
+                            imageVector = screen.icon,
+                            contentDescription = screen.title,
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     },
                     label = {
                         Text(
-                            text = item.title,
+                            text = screen.title,
                             color = MaterialTheme.colorScheme.onBackground
                         )
                     }
