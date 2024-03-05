@@ -302,7 +302,7 @@ val courseList = listOf(
 fun CourseSection() {
     Column {
         Text(
-            text = "Courses",
+            text = "Courses for you",
             fontSize = 24.sp,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
