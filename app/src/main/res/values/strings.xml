@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MAD-LearningHubKt</string>
+    <string name="google_map_API_key">AIzaSyAt6zX2DvHNt3ewsVYagUZgHmFZI1Ge4Ns</string>
 </resources>
