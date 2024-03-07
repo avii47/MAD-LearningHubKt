@@ -1,5 +1,6 @@
 package com.example.mad_learninghubkt
 
+import PersonalDetailsScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
                 SetBarColor(color = MaterialTheme.colorScheme.background)
                 MainScreen()
             }
+
         }
     }
 }
