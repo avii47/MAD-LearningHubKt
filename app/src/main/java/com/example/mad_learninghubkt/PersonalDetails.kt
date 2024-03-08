@@ -1,3 +1,5 @@
+//package com.example.mad_learninghubkt
+
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -40,6 +42,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +50,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -71,6 +75,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.example.mad_learninghubkt.CardSection
 import com.example.mad_learninghubkt.CategorySection
@@ -90,7 +96,7 @@ import java.util.Locale
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-//@Preview
+@Preview
 @Composable
 fun PersonalDetailsScreen() {
 
@@ -130,7 +136,7 @@ fun TopCardSection() {
                 )
                 .background(getGradient(BlueStart, BlueEnd))
                 .fillMaxWidth()
-                .height(120.dp)
+                .height(200.dp)
                 .padding(vertical = 12.dp, horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -138,7 +144,7 @@ fun TopCardSection() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 50.dp),
+                .padding(top = 120.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val drawableUri = getDrawableUri(LocalContext.current, R.drawable.user_img1)
@@ -265,112 +271,192 @@ fun ContentSection() {
     }
 }
 
+
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NameField(name: String) {
-    Text(text = "Name",Modifier.padding(start = 20.dp))
-    TextField(
+    OutlinedTextField(
         value = name,
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent),
+            .padding(8.dp), // Add padding for better appearance
+        label = { Text(text = "Name")},
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BlueStart,
+            unfocusedBorderColor = BlueEnd,
+            focusedLabelColor = BlueStart,
+            unfocusedLabelColor = BlueEnd
+        ),
         shape = RoundedCornerShape(30.dp),
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            // Handle done action if needed
+        }),
     )
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddressField(address: String) {
-    Text(text = "Address",Modifier.padding(start = 20.dp))
-    TextField(
+    OutlinedTextField(
         value = address,
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent),
+            .padding(8.dp), // Add padding for better appearance
+        label = { Text(text = "Address")},
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BlueStart,
+            unfocusedBorderColor = BlueEnd,
+            focusedLabelColor = BlueStart,
+            unfocusedLabelColor = BlueEnd
+        ),
         shape = RoundedCornerShape(30.dp),
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            // Handle done action if needed
+        }),
     )
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailField(email: String) {
-    Text(text = "Email",Modifier.padding(start = 20.dp))
-    TextField(
+    OutlinedTextField(
         value = email,
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent),
+            .padding(8.dp), // Add padding for better appearance
+        label = { Text(text = "Address")},
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BlueStart,
+            unfocusedBorderColor = BlueEnd,
+            focusedLabelColor = BlueStart,
+            unfocusedLabelColor = BlueEnd
+        ),
         shape = RoundedCornerShape(30.dp),
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            // Handle done action if needed
+        }),
     )
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordField(password: String) {
-    Text(text = "Password",Modifier.padding(start = 20.dp))
-    TextField(
-        value = "reachthefinish1",
+    OutlinedTextField(
+        value = password,
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent),
+            .padding(8.dp), // Add padding for better appearance
+        label = { Text(text = "Address")},
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BlueStart,
+            unfocusedBorderColor = BlueEnd,
+            focusedLabelColor = BlueStart,
+            unfocusedLabelColor = BlueEnd
+        ),
         shape = RoundedCornerShape(30.dp),
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
-        visualTransformation = PasswordVisualTransformation()
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
+        visualTransformation = PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            // Handle done action if needed
+        }),
     )
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenderDropdown(gender:String) {
-    Text(text = "Gender",Modifier.padding(start = 20.dp))
-    TextField(
+    OutlinedTextField(
         value = gender,
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent),
+            .padding(8.dp), // Add padding for better appearance
+        label = { Text(text = "Address")},
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BlueStart,
+            unfocusedBorderColor = BlueEnd,
+            focusedLabelColor = BlueStart,
+            unfocusedLabelColor = BlueEnd
+        ),
         shape = RoundedCornerShape(30.dp),
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            // Handle done action if needed
+        }),
     )
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LivingCityDropdown(city:String) {
-    Text(text = "Living City",Modifier.padding(start = 20.dp))
-    TextField(
+    OutlinedTextField(
         value = city,
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent),
+            .padding(8.dp), // Add padding for better appearance
+        label = { Text(text = "Address")},
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BlueStart,
+            unfocusedBorderColor = BlueEnd,
+            focusedLabelColor = BlueStart,
+            unfocusedLabelColor = BlueEnd
+        ),
         shape = RoundedCornerShape(30.dp),
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            // Handle done action if needed
+        }),
     )
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MobileNoField(mobileNo: String) {
-    Text(text = "Mobile Number",Modifier.padding(start = 20.dp))
-    TextField(
+    OutlinedTextField(
         value = mobileNo,
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Transparent),
+            .padding(8.dp), // Add padding for better appearance
+        label = { Text(text = "Address")},
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BlueStart,
+            unfocusedBorderColor = BlueEnd,
+            focusedLabelColor = BlueStart,
+            unfocusedLabelColor = BlueEnd
+        ),
         shape = RoundedCornerShape(30.dp),
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            // Handle done action if needed
+        }),
     )
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateField(date: String) {
     var showDialog by remember { mutableStateOf(false) }
@@ -378,15 +464,25 @@ fun DateField(date: String) {
     val context = LocalContext.current
 
     Text(text = "Birthday", Modifier.padding(start = 20.dp))
-    TextField(
+    OutlinedTextField(
         value = selectedDate,
         onValueChange = { selectedDate = it },
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.Transparent),
         shape = RoundedCornerShape(30.dp),
-        textStyle = TextStyle(color = Color.Black, fontSize = 18.sp),
-        placeholder = { Text("Date") },
+        label = { Text(text = "Address")},
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = BlueStart,
+            unfocusedBorderColor = BlueEnd,
+            focusedLabelColor = BlueStart,
+            unfocusedLabelColor = BlueEnd
+        ),
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            // Handle done action if needed
+        }),
         trailingIcon = {
             IconButton(
                 onClick = { showDialog = true },
@@ -399,7 +495,7 @@ fun DateField(date: String) {
             }
         }
     )
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 
     if (showDialog) {
         showDatePicker(context) { year, month, dayOfMonth ->
