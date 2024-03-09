@@ -11,17 +11,23 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.findNavController
 import com.example.mad_learninghubkt.ui.theme.MADLearningHubKtTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.maps.android.compose.rememberCameraPositionState
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MADLearningHubKtTheme {
+
                 SetBarColor(color = MaterialTheme.colorScheme.background)
                 MainScreen()
+
             }
 
         }

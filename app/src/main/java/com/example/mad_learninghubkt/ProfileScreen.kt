@@ -1,6 +1,5 @@
 package com.example.mad_learninghubkt
 
-import PersonalDetailsScreen
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,6 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
@@ -39,10 +40,10 @@ import com.example.mad_learninghubkt.ui.theme.BlueStart
 @Preview
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavHostController = rememberNavController()) {
     Scaffold {
         Column {
-            MyAccountSection()
+            MyAccountSection(navController)
             AccountSection()
             GeneralSection()
         }
@@ -87,7 +88,7 @@ fun AccountSection() {
 }
 
 @Composable
-fun MyAccountSection() {
+fun MyAccountSection(navController: NavController) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -101,6 +102,7 @@ fun MyAccountSection() {
             modifier = Modifier.padding(16.dp)
         )
 
+
         Icon(
             imageVector = Icons.Default.Edit,
             contentDescription = "Edit Account",
@@ -108,8 +110,7 @@ fun MyAccountSection() {
                 .padding(16.dp)
                 .size(25.dp)
                 .clickable {
-                    // Navigate to another screen when clicked
-                    //navController.navigate("destination_screen_route")
+                    navController.navigate(route = Navigation.PersonalDetails.route)
                 }
         )
     }
