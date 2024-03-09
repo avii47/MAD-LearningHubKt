@@ -22,11 +22,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 @Preview
-fun GetStartedScreen() {
+fun GetStartedScreen(navController: NavHostController = rememberNavController()) {
     Scaffold {
         Column(
             modifier = Modifier
@@ -46,7 +48,9 @@ fun GetStartedScreen() {
                 modifier = Modifier.padding(16.dp)
             )
             Button(
-                onClick = { /* Handle button click */ },
+                onClick = {
+                    navController.navigate(route = Navigation.UserRegisterScreen.route)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
