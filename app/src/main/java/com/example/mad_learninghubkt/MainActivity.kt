@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
                 navController = rememberNavController()
                 SetupNavGraph1(navController = navController)
 
+
             }
 
         }
