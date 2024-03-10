@@ -49,7 +49,7 @@ fun GetStartedScreen(navController: NavHostController = rememberNavController())
             )
             Button(
                 onClick = {
-                    navController.navigate(route = Navigation.UserRegisterScreen.route)
+                    navController.navigate(route = Navigation.UserLoginScreen.route)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

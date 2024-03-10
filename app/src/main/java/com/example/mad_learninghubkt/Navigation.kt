@@ -8,7 +8,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Navigation(val route: String) {
     object GetStartScreen: Navigation(route = "get_start_screen")
+    object UserLoginScreen: Navigation(route = "user_login_screen")
     object UserRegisterScreen: Navigation(route = "user_register_screen")
+    object EmailVerificationScreen: Navigation(route = "email_verification_screen")
     object HomeScreen: Navigation(route = "Home_screen")
     object ProfileScreen: Navigation(route = "profile_screen")
     object PersonalDetails: Navigation(route = "personal_details")

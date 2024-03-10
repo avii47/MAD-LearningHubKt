@@ -22,9 +22,21 @@ fun SetupNavGraph1(
         }
 
         composable(
+            route = Navigation.UserLoginScreen.route
+        ) {
+            UserLoginScreen(navController = navController)
+        }
+
+        composable(
             route = Navigation.UserRegisterScreen.route
         ) {
             UserRegistraionScreen(navController = navController)
+        }
+
+        composable(
+            route = Navigation.EmailVerificationScreen.route
+        ) {
+            EmailVerificationScreen(navController = navController)
         }
 
         composable(

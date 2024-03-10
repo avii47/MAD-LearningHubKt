@@ -67,15 +67,15 @@ fun UserRegistraionScreen(navController: NavHostController = rememberNavControll
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            HeadingSection()
-            FormSection()
-            BtnSection(navController)
+            RegisterHeadingSection()
+            RegisterFormSection()
+            RegisterBtnSection(navController)
         }
     }
 }
 
 @Composable
-fun HeadingSection(){
+fun RegisterHeadingSection(){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -99,7 +99,7 @@ fun HeadingSection(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormSection(){
+fun RegisterFormSection(){
 
     Box(
         modifier = Modifier
@@ -344,7 +344,7 @@ fun FormSection(){
 }
 
 @Composable
-fun BtnSection(navController: NavController){
+fun RegisterBtnSection(navController: NavController){
     // Update and Delete buttons
     Row(
         modifier = Modifier
@@ -352,8 +352,10 @@ fun BtnSection(navController: NavController){
             .padding(start = 70.dp, top = 40.dp),
 
     ) {
-        Button(onClick = { /* Handle register */ }) {
-            Text("Register")
+        Button(onClick = {
+            navController.navigate(route = Navigation.EmailVerificationScreen.route)
+        }) {
+            Text("Next")
         }
         Spacer(modifier = Modifier.width(20.dp))
         Button(onClick = {

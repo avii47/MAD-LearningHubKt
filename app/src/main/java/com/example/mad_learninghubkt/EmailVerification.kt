@@ -37,11 +37,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
-fun EmailVerificationScreen() {
+fun EmailVerificationScreen(navController: NavHostController = rememberNavController()) {
 
     Scaffold(
         bottomBar = {
@@ -54,13 +57,15 @@ fun EmailVerificationScreen() {
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            HeadingSection()
+            EmailHeadingSection()
+            OtpCodeInput()
+            EmailBtnSection(navController)
         }
     }
 }
 
 @Composable
-fun HeadingSection(){
+fun EmailHeadingSection(){
     Box(modifier = Modifier){
 
         Column(modifier = Modifier
@@ -94,8 +99,6 @@ fun HeadingSection(){
                 color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(20.dp))
-            OtpCodeInput()
-            BtnSection()
 
         }
     }
@@ -146,7 +149,7 @@ fun  OtpCodeInput() {
 }
 
 @Composable
-fun BtnSection(){
+fun EmailBtnSection(navController: NavController){
     // Update and Delete buttons
     Row(
         modifier = Modifier
