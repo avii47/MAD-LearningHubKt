@@ -26,7 +26,8 @@ class MainActivity : ComponentActivity() {
             MADLearningHubKtTheme {
 
                 SetBarColor(color = MaterialTheme.colorScheme.background)
-                MainScreen()
+                //MainScreen()
+                EmailVerificationScreen()
 
             }
 
