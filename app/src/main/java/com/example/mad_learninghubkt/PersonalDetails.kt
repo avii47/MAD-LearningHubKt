@@ -334,7 +334,7 @@ fun EmailField(email: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp), // Add padding for better appearance
-        label = { Text(text = "Address")},
+        label = { Text(text = "Email")},
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = BlueStart,
             unfocusedBorderColor = BlueEnd,
@@ -360,7 +360,7 @@ fun PasswordField(password: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp), // Add padding for better appearance
-        label = { Text(text = "Address")},
+        label = { Text(text = "Password")},
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = BlueStart,
             unfocusedBorderColor = BlueEnd,
@@ -386,8 +386,8 @@ fun GenderDropdown(gender:String) {
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp), // Add padding for better appearance
-        label = { Text(text = "Address")},
+            .padding(8.dp),
+        label = { Text(text = "Gender")},
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = BlueStart,
             unfocusedBorderColor = BlueEnd,
@@ -412,8 +412,8 @@ fun LivingCityDropdown(city:String) {
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp), // Add padding for better appearance
-        label = { Text(text = "Address")},
+            .padding(8.dp),
+        label = { Text(text = "Living City")},
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = BlueStart,
             unfocusedBorderColor = BlueEnd,
@@ -438,8 +438,8 @@ fun MobileNoField(mobileNo: String) {
         onValueChange = {},
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp), // Add padding for better appearance
-        label = { Text(text = "Address")},
+            .padding(8.dp),
+        label = { Text(text = "Mobile Number")},
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = BlueStart,
             unfocusedBorderColor = BlueEnd,
@@ -471,7 +471,7 @@ fun DateField(date: String) {
             .fillMaxWidth()
             .background(color = Color.Transparent),
         shape = RoundedCornerShape(30.dp),
-        label = { Text(text = "Address")},
+        label = { Text(text = "Date of Birth")},
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = BlueStart,
             unfocusedBorderColor = BlueEnd,

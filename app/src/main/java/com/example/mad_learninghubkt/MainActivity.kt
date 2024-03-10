@@ -20,13 +20,14 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 class MainActivity : ComponentActivity() {
 
+    lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MADLearningHubKtTheme {
 
-                SetBarColor(color = MaterialTheme.colorScheme.background)
-                MainScreen()
+                navController = rememberNavController()
+                SetupNavGraph1(navController = navController)
 
             }
 

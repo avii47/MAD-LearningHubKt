@@ -17,9 +17,9 @@ fun BottomNavGraph(navController: NavHostController) {
         }
         composable(BottomBarScreen.Account.route) {
 
-            lateinit var navController2: NavHostController
-            navController2 = rememberNavController()
-            SetupNavGraph(navController = navController2)
+            lateinit var subNavController: NavHostController
+            subNavController = rememberNavController()
+            SetupSubNavGraph(navController = subNavController)
         }
     }
 }
