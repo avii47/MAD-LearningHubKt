@@ -31,6 +31,12 @@ fun SetupNavGraph1(
         }
 
         composable(
+            route = Navigation.EmailVerificationScreen.route
+        ) {
+            EmailVerificationScreen(navController = navController)
+        }
+
+        composable(
             route = Navigation.HomeScreen.route
         ) {
             MainScreen()
