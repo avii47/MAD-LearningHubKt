@@ -345,14 +345,13 @@ fun FormSection(){
 
 @Composable
 fun BtnSection(navController: NavController){
-    // Update and Delete buttons
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 70.dp, top = 40.dp),
 
     ) {
-        Button(onClick = { /* Handle register */ }) {
+        Button(onClick = { navController.navigate(route = Navigation.EmailVerificationScreen.route) }) {
             Text("Register")
         }
         Spacer(modifier = Modifier.width(20.dp))
