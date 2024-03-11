@@ -10,16 +10,19 @@ import androidx.navigation.compose.rememberNavController
 fun BottomNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = BottomBarScreen.Home.route) {
         composable(BottomBarScreen.Home.route) {
-            HomeScreen()
+            //HomeScreen()
+            lateinit var homeNavController: NavHostController
+            homeNavController = rememberNavController()
+            SetupHomeNavGraph(navController = homeNavController)
         }
         composable(BottomBarScreen.Locations.route) {
             LocationsScreen()
         }
         composable(BottomBarScreen.Account.route) {
 
-            lateinit var subNavController: NavHostController
-            subNavController = rememberNavController()
-            SetupSubNavGraph(navController = subNavController)
+            lateinit var profileNavController: NavHostController
+            profileNavController = rememberNavController()
+            SetupProfileNavGraph(navController = profileNavController)
         }
     }
 }

@@ -146,8 +146,12 @@ fun  OtpCodeInput() {
 }
 
 @Composable
+<<<<<<< Updated upstream
 fun BtnSection(){
     // Update and Delete buttons
+=======
+fun EmailBtnSection(navController: NavController){
+>>>>>>> Stashed changes
     Row(
         modifier = Modifier
             .fillMaxWidth()

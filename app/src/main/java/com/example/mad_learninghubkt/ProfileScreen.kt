@@ -116,21 +116,21 @@ fun MyAccountSection(navController: NavController) {
     }
 }
 
-val mycourses = listOf(
-    CoursesItem(
-        title = "Python Programming",
-        level = "Beginner",
-        duration = 30,
-        image = R.drawable.python
-    ),
-
-    CoursesItem(
-        title = "Java Programming",
-        level = "Intermediate",
-        duration = 45,
-        image = R.drawable.java
-    ),
-)
+//val mycourses = listOf(
+//    CoursesItem(
+//        title = "Python Programming",
+//        level = "Beginner",
+//        duration = 30,
+//        image = R.drawable.python
+//    ),
+//
+//    CoursesItem(
+//        title = "Java Programming",
+//        level = "Intermediate",
+//        duration = 45,
+//        image = R.drawable.java
+//    ),
+//)
 
 @Composable
 fun GeneralSection() {
@@ -142,9 +142,9 @@ fun GeneralSection() {
         modifier = Modifier.padding(16.dp)
     )
 
-    LazyColumn() {
-        items(mycourses.size) { index ->
-            CourseItem(index)
-        }
-    }
+//    LazyColumn() {
+//        items(courseList.size) { index ->
+//            CourseItem(index)
+//        }
+//    }
 }

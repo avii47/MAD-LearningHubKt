@@ -1,6 +1,7 @@
 package com.example.mad_learninghubkt
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.data.CategoriesItem
@@ -51,7 +53,7 @@ import com.example.mad_learninghubkt.ui.theme.PurpleStart
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
         bottomBar = {
             Spacer(modifier = Modifier.height(80.dp))
@@ -67,7 +69,7 @@ fun HomeScreen() {
             CardSection()
             CategorySection()
             Spacer(modifier = Modifier.size(16.dp))
-            CourseSection()
+            CourseSection(navController)
         }
     }
 }
@@ -289,20 +291,34 @@ val courseList = listOf(
     CoursesItem(
         title = "Python Programming",
         level = "Beginner",
+        overview = "After completing the A/L introductory Python course, students will have gained a foundational understanding of Python programming language. They will be equipped with essential skills to write and comprehend Python code, creating a solid groundwork for further exploration and application in various domains such as data science, web development, and automation.",
         duration = 30,
+        fee = 30000,
+        max = 50,
+        publishedDate = "03/11/2024",
+        closingDate = "04/11/2024",
+        startingDate = "04/12/2024",
+        branches = "Colombo, Matara, Kandy",
         image = R.drawable.python
     ),
 
     CoursesItem(
         title = "Java Programming",
         level = "Intermediate",
+        overview = "After completing the A/L introductory Python course, students will have gained a foundational understanding of Python programming language. They will be equipped with essential skills to write and comprehend Python code, creating a solid groundwork for further exploration and application in various domains such as data science, web development, and automation.",
         duration = 45,
+        fee = 50000,
+        max = 30,
+        publishedDate = "03/05/2024",
+        closingDate = "04/05/2024",
+        startingDate = "04/07/2024",
+        branches = "Colombo, Matara, Kandy",
         image = R.drawable.java
     ),
 )
 
 @Composable
-fun CourseSection() {
+fun CourseSection(navController: NavController) {
     Column {
         Text(
             text = "Courses for you",
@@ -312,7 +328,7 @@ fun CourseSection() {
             modifier = Modifier.padding(16.dp)
         )
         courseList.forEach { index ->
-            CourseItem(index = courseList.indexOf(index))
+            CourseItem(index = courseList.indexOf(index), navController)
         }
     }
 }
@@ -375,4 +391,67 @@ fun CourseItem(
                 }
             }
         }
+}
+
+@Composable
+fun CourseItem(
+    index: Int,
+    navController: NavController
+) {
+    val course = courseList[index]
+    val iconPainter = painterResource(id = course.image)
+
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
+            .clickable {
+                navController.navigate(route = "${Navigation.CourseDetails.route}/${index}")
+            }
+    ) {
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(25.dp))
+                .background(MaterialTheme.colorScheme.secondaryContainer)
+                .fillMaxWidth()
+                .height(120.dp)
+                .padding(vertical = 12.dp, horizontal = 16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Image(
+                    painter = iconPainter,
+                    contentDescription = course.title,
+                    modifier = Modifier.width(60.dp)
+                )
+
+                Column {
+                    Text(
+                        text = course.title,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        text = course.level,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        text = course.duration.toString() + " hours",
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
 }
