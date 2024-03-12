@@ -335,66 +335,6 @@ fun CourseSection(navController: NavController) {
 
 @Composable
 fun CourseItem(
-        index: Int
-    ) {
-        val course = courseList[index]
-        val iconPainter = painterResource(id = course.image)
-
-        Box(
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(25.dp))
-                    .background(MaterialTheme.colorScheme.secondaryContainer)
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .clickable {}
-                    .padding(vertical = 12.dp, horizontal = 16.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(8.dp)
-                ) {
-                    Image(
-                        painter = iconPainter,
-                        contentDescription = course.title,
-                        modifier = Modifier.width(60.dp)
-                    )
-
-                    Column {
-                        Text(
-                            text = course.title,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-
-                        Text(
-                            text = course.level,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            fontSize = 17.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-
-                        Text(
-                            text = course.duration.toString() + " hours",
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-            }
-        }
-}
-
-@Composable
-fun CourseItem(
     index: Int,
     navController: NavController
 ) {

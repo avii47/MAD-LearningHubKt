@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +32,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.AppOpsManagerCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mad_learninghubkt.ui.theme.black
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -48,20 +50,17 @@ import com.google.maps.android.compose.MarkerInfoWindowContent
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 
-
-//defining the location LatLng
-val slState = LatLng(
-    7.8731, 80.7718
-)
-val defaultCameraPosition = CameraPosition.fromLatLngZoom(slState, 7f)
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun LocationsScreen() {
+fun LocationsScreen(branchId:Int) {
+
+    val selectedBranch = branchList[branchId]
+    val defaultCameraPosition = CameraPosition.fromLatLngZoom(selectedBranch.latLng, 7f)
+
     Scaffold {
         Text(
-            text = "Our Locations",
+            text = "Location",
             fontSize = 24.sp,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
@@ -84,6 +83,9 @@ fun LocationsScreen() {
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .padding(top = 60.dp, start = 16.dp, end = 16.dp, bottom = 100.dp),
+            name = selectedBranch.branchName,
+            location = selectedBranch.latLng,
+            address = selectedBranch.address,
             cameraPositionState = cameraPositionState,
             onMapLoaded = {
                 isMapLoaded = true
@@ -106,11 +108,14 @@ fun LocationsScreen() {
 @Composable
 fun GoogleMapView(
     modifier: Modifier = Modifier,
+    name: String,
+    location: LatLng,
+    address: String,
     cameraPositionState: CameraPositionState,
     onMapLoaded: () -> Unit)
 {
     val locationState = rememberMarkerState(
-        position = slState
+        position = location
     )
 
     val mapUiSettings by remember {
@@ -145,13 +150,19 @@ fun GoogleMapView(
                 showInfoWindow = !showInfoWindow
                 return@MarkerInfoWindowContent false
             },
-            title = "India Map Title"
+            title = "Campus Location"
         ) {
-            Column {
-                Text(text = "NIBM Sri Lanka")
-                Text(text = "any text1")
-                Text(text = "any text2")
-
+            Column(modifier = Modifier
+                .width(200.dp)) {
+                    Text(
+                        fontWeight = FontWeight.Bold,
+                        color = black,
+                        text = name
+                    )
+                    Text(
+                        color = black,
+                        text = address
+                    )
             }
         }
 

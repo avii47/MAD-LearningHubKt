@@ -42,13 +42,6 @@ fun SetupNavGraph1(
             MainScreen()
         }
 
-//        composable(
-//            route = Navigation.ProfileScreen.route
-//        ) {
-//            //ProfileScreen()
-//        }
-
-
         composable(
             route = Navigation.PersonalDetails.route
         ) {
@@ -107,6 +100,39 @@ fun SetupHomeNavGraph(
             route = Navigation.PaymentScreen.route
         ) {
             PaymentScreen(navController)
+        }
+    }
+}
+
+@Composable
+fun SetupBranchNavGraph(
+    navController: NavHostController,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = Navigation.BranchListScreen.route
+    ) {
+
+        composable(
+            route = Navigation.BranchListScreen.route
+        ) {
+            BranchListScreen(navController)
+        }
+
+        composable(
+            route = "${Navigation.BranchDetails.route}/{branchId}",
+            arguments = listOf(navArgument("branchId") { type = NavType.IntType }) // Define argument for courseId
+        ) { backStackEntry ->
+            val branchId = backStackEntry.arguments?.getInt("branchId") ?: 0 // Default value if courseId is null
+            BranchDetailsScreen(navController, branchId)
+        }
+
+        composable(
+            route = "${Navigation.LocationScreen.route}/{branchId}",
+            arguments = listOf(navArgument("branchId") { type = NavType.IntType }) // Define argument for courseId
+        ) { backStackEntry ->
+            val branchId = backStackEntry.arguments?.getInt("branchId") ?: 0 // Default value if courseId is null
+            LocationsScreen(branchId)
         }
     }
 }

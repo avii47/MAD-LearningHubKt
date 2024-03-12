@@ -15,4 +15,7 @@ sealed class Navigation(val route: String) {
     object PaymentScreen: Navigation(route = "payment_screen")
     object ProfileScreen: Navigation(route = "profile_screen")
     object PersonalDetails: Navigation(route = "personal_details")
+    object BranchListScreen: Navigation(route = "branch_list_screen")
+    object BranchDetails: Navigation(route = "branch_details")
+    object LocationScreen: Navigation(route = "location_screen")
 }
