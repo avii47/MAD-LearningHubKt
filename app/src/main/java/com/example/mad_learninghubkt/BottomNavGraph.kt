@@ -16,7 +16,9 @@ fun BottomNavGraph(navController: NavHostController) {
             SetupHomeNavGraph(navController = homeNavController)
         }
         composable(BottomBarScreen.Locations.route) {
-            LocationsScreen()
+            lateinit var branchNavController: NavHostController
+            branchNavController = rememberNavController()
+            SetupBranchNavGraph(navController = branchNavController)
         }
         composable(BottomBarScreen.Account.route) {
 

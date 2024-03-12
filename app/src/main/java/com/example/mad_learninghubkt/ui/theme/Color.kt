@@ -26,3 +26,4 @@ val GreenStart2 = Color(0xFF64CCC5)
 val GreenEnd2 = Color(0xFF176B87)
 
 val background = Color(0xFFEEEEEE)
+val black = Color(0xFF000000)
