@@ -1,6 +1,8 @@
 package com.example.mad_learninghubkt
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,20 +11,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,21 +29,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mad_learninghubkt.util.SharedViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.security.SecureRandom
+import java.util.Properties
+import javax.mail.Authenticator
+import javax.mail.Message
+import javax.mail.MessagingException
+import javax.mail.PasswordAuthentication
+import javax.mail.Session
+import javax.mail.Transport
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
+
+//genrate random otp
+val generatedOTP = generateOTP()
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun EmailVerificationScreen(navController: NavHostController = rememberNavController()) {
+fun EmailVerificationScreen(navController: NavHostController = rememberNavController(), sharedViewModel: SharedViewModel) {
 
     Scaffold(
         bottomBar = {
@@ -58,14 +74,17 @@ fun EmailVerificationScreen(navController: NavHostController = rememberNavContro
                 .verticalScroll(rememberScrollState())
         ) {
             EmailHeadingSection()
-            OtpCodeInput()
-            EmailBtnSection(navController)
+            OtpCodeInput(sharedViewModel, navController)
         }
     }
 }
 
 @Composable
 fun EmailHeadingSection(){
+
+    //send the otp as an email to the user's email
+    sendEmail(userData.email, generatedOTP)
+
     Box(modifier = Modifier){
 
         Column(modifier = Modifier
@@ -87,7 +106,7 @@ fun EmailHeadingSection(){
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
-                text = "ashanavishka81@gmail.com",
+                text = userData.email,
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -99,18 +118,18 @@ fun EmailHeadingSection(){
                 color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(20.dp))
-
-
         }
     }
 }
 
 @SuppressLint("RememberReturnType")
 @Composable
-fun  OtpCodeInput() {
+fun  OtpCodeInput(sharedViewModel: SharedViewModel, navController: NavController) {
 
     val focusRequesters = remember { List(6) { FocusRequester() } }
     var otp by remember { mutableStateOf(List(6) { "" }) }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -127,6 +146,9 @@ fun  OtpCodeInput() {
                         }
                         if (newValue.isNotEmpty() && index < 5) {
                             focusRequesters[index + 1].requestFocus()
+                        } else if (newValue.isNotEmpty() && index == 5) {
+                            // Call the verification function when the last digit is entered
+                            verifyOTP(context, otp.joinToString(""), sharedViewModel, navController)
                         }
                     }
                 },
@@ -140,27 +162,74 @@ fun  OtpCodeInput() {
                     onNext = {
                         if (index < 5) {
                             focusRequesters[index + 1].requestFocus()
+                        } else {
+                            keyboardController?.hide() // Hide the keyboard after entering the last digit
                         }
                     }
                 )
             )
         }
     }
-
 }
 
-@Composable
-fun EmailBtnSection(navController: NavController){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 60.dp),
-    ) {
-        Button(modifier = Modifier
-            .padding(start = 80.dp, top = 50.dp),
-            onClick = { /* Handle update */ }) {
-            Text("Register")
-        }
+fun verifyOTP(
+    context: Context,
+    enteredOTP: String,
+    sharedViewModel: SharedViewModel,
+    navController: NavController)
+{
+    if (enteredOTP == generatedOTP) {
+        Toast.makeText(context, "Email Verified", Toast.LENGTH_SHORT).show()
+        sharedViewModel.saveData(userData = userData, context = context)
+        Toast.makeText(context, "Account Created Successful", Toast.LENGTH_SHORT).show()
+        navController.navigate(route = Navigation.UserLoginScreen.route)
+    } else {
+        Toast.makeText(context, "OTP is incorrect", Toast.LENGTH_SHORT).show()
+    }
+}
 
+fun generateOTP(): String {
+    val random = SecureRandom()
+    val otp = StringBuilder()
+
+    for (i in 0 until 6) {
+        otp.append(random.nextInt(10))
+    }
+
+    return otp.toString()
+}
+
+fun sendEmail(email: String, otp: String) {
+    // Start a coroutine on the IO dispatcher
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val properties = Properties().apply {
+                put("mail.smtp.host", "smtp.gmail.com") // Change to your SMTP server
+                put("mail.smtp.port", "587") // Change to your SMTP port
+                put("mail.smtp.auth", "true")
+                put("mail.smtp.starttls.enable", "true")
+            }
+
+            val username = "ashankaize81@gmail.com" // Change to your email username
+            val password = "alxw peum gtuu nfgx" // Change to your email password
+
+            val session = Session.getInstance(properties, object : Authenticator() {
+                override fun getPasswordAuthentication(): PasswordAuthentication {
+                    return PasswordAuthentication(username, password)
+                }
+            })
+
+            val message = MimeMessage(session)
+            message.setFrom(InternetAddress(username))
+            message.addRecipient(Message.RecipientType.TO, InternetAddress(email))
+            message.subject = "OTP Verification"
+            message.setText("Your OTP is: $otp")
+
+            Transport.send(message)
+
+            println("OTP sent successfully to $email")
+        } catch (e: MessagingException) {
+            e.printStackTrace()
+        }
     }
 }

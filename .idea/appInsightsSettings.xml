@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.mad_learninghubkt" />
+                  <option name="mobileSdkAppId" value="1:99038012851:android:6d676d1613a30db9f317c6" />
+                  <option name="projectId" value="boreal-voyager-416316" />
+                  <option name="projectNumber" value="99038012851" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
