@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "99038012851",
+    "project_id": "boreal-voyager-416316",
+    "storage_bucket": "boreal-voyager-416316.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99038012851:android:6d676d1613a30db9f317c6",
+        "android_client_info": {
+          "package_name": "com.example.mad_learninghubkt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt6zX2DvHNt3ewsVYagUZgHmFZI1Ge4Ns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

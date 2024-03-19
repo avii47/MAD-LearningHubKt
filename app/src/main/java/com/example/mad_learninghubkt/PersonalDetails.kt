@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.CalendarView
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -81,11 +82,17 @@ import coil.compose.rememberImagePainter
 import com.example.mad_learninghubkt.CardSection
 import com.example.mad_learninghubkt.CategorySection
 import com.example.mad_learninghubkt.CourseSection
+import com.example.mad_learninghubkt.LoginResult
 import com.example.mad_learninghubkt.R
 import com.example.mad_learninghubkt.TopSection
+import com.example.mad_learninghubkt.data.UserData
 import com.example.mad_learninghubkt.getGradient
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
 import com.example.mad_learninghubkt.ui.theme.BlueStart
+import com.example.mad_learninghubkt.userData
+import com.example.mad_learninghubkt.util.UserDataStore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -242,36 +249,26 @@ fun ContentSection() {
                 .fillMaxSize()
                 .padding(20.dp)
         ) {
+            val currentUserData: UserData? = UserDataStore.getUserData()
 
-            // Name field
-            NameField(name = "Ashan Avishka")
+            if (currentUserData != null) {
 
-            // Address field
-            AddressField(address = "Matara")
+                NameField(currentUserData.userName)
+                AddressField(currentUserData.address)
+                EmailField(currentUserData.email)
+                PasswordField(currentUserData.password)
+                GenderDropdown(currentUserData.gender)
+                LivingCityDropdown(currentUserData.livingCity)
+                MobileNoField(currentUserData.mobileNo)
+                DateField(currentUserData.dob)
 
-            // Email field
-            EmailField(email = "ashanavishka81@gmail.com")
-
-            // Password field
-            PasswordField(password = "Reachthefinish1")
-
-            // Gender dropdown
-            GenderDropdown(gender = "Male")
-
-            // Living City dropdown
-            LivingCityDropdown(city = "Matara")
-
-            // Mobile number field
-            MobileNoField(mobileNo = "0702100295")
-
-            // Date field
-            DateField(date = "2002-04-01")
-
+            } else {
+                // User data not available
+                // Handle the case where user data is null
+            }
         }
     }
 }
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -463,7 +460,6 @@ fun DateField(date: String) {
     var selectedDate by remember { mutableStateOf(date) }
     val context = LocalContext.current
 
-    Text(text = "Birthday", Modifier.padding(start = 20.dp))
     OutlinedTextField(
         value = selectedDate,
         onValueChange = { selectedDate = it },

@@ -7,11 +7,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.mad_learninghubkt.data.CoursesItem
+import com.example.mad_learninghubkt.util.SharedViewModel
+
 
 @Composable
 fun SetupNavGraph1(
-    navController: NavHostController
+    navController: NavHostController,
+    sharedViewModel: SharedViewModel
 ) {
     NavHost(
         navController = navController,
@@ -25,6 +27,12 @@ fun SetupNavGraph1(
         }
 
         composable(
+            route = Navigation.UserLoginScreen.route
+        ) {
+            UserLoginScreen(navController = navController, sharedViewModel = sharedViewModel)
+        }
+
+        composable(
             route = Navigation.UserRegisterScreen.route
         ) {
             UserRegistraionScreen(navController = navController)
@@ -33,7 +41,7 @@ fun SetupNavGraph1(
         composable(
             route = Navigation.EmailVerificationScreen.route
         ) {
-            EmailVerificationScreen(navController = navController)
+            EmailVerificationScreen(navController = navController, sharedViewModel = sharedViewModel)
         }
 
         composable(
@@ -90,9 +98,9 @@ fun SetupHomeNavGraph(
 
         composable(
             route = "${Navigation.CourseDetails.route}/{courseId}",
-            arguments = listOf(navArgument("courseId") { type = NavType.IntType }) // Define argument for courseId
+            arguments = listOf(navArgument("courseId") { type = NavType.IntType })
         ) { backStackEntry ->
-            val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0 // Default value if courseId is null
+            val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0
             CourseDetailsScreen(navController, courseId)
         }
 
@@ -121,17 +129,17 @@ fun SetupBranchNavGraph(
 
         composable(
             route = "${Navigation.BranchDetails.route}/{branchId}",
-            arguments = listOf(navArgument("branchId") { type = NavType.IntType }) // Define argument for courseId
+            arguments = listOf(navArgument("branchId") { type = NavType.IntType })
         ) { backStackEntry ->
-            val branchId = backStackEntry.arguments?.getInt("branchId") ?: 0 // Default value if courseId is null
+            val branchId = backStackEntry.arguments?.getInt("branchId") ?: 0
             BranchDetailsScreen(navController, branchId)
         }
 
         composable(
             route = "${Navigation.LocationScreen.route}/{branchId}",
-            arguments = listOf(navArgument("branchId") { type = NavType.IntType }) // Define argument for courseId
+            arguments = listOf(navArgument("branchId") { type = NavType.IntType })
         ) { backStackEntry ->
-            val branchId = backStackEntry.arguments?.getInt("branchId") ?: 0 // Default value if courseId is null
+            val branchId = backStackEntry.arguments?.getInt("branchId") ?: 0
             LocationsScreen(branchId)
         }
     }

@@ -1,6 +1,7 @@
 package com.example.mad_learninghubkt
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,12 +32,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role.Companion.Checkbox
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -44,11 +44,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
 import com.example.mad_learninghubkt.ui.theme.BlueStart
+import com.example.mad_learninghubkt.util.SharedViewModel
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun UserLoginScreen(navController: NavHostController = rememberNavController()) {
+fun UserLoginScreen(navController: NavHostController = rememberNavController(), sharedViewModel: SharedViewModel) {
 
     Scaffold(
         bottomBar = {
@@ -62,7 +67,7 @@ fun UserLoginScreen(navController: NavHostController = rememberNavController()) 
                 .verticalScroll(rememberScrollState())
         ) {
             LoginHeadingSection()
-            LoginFormSection()
+            LoginFormSection(navController, sharedViewModel)
             LoginBtnSection(navController)
         }
     }
@@ -91,9 +96,14 @@ fun LoginHeadingSection(){
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("CoroutineCreationDuringComposition")
+@OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
 @Composable
-fun LoginFormSection() {
+fun LoginFormSection(navController: NavController, sharedViewModel: SharedViewModel) {
+
+    var lgemail: String by remember { mutableStateOf("") }
+    var lgpassword: String by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -108,8 +118,10 @@ fun LoginFormSection() {
         ) {
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = lgemail,
+                onValueChange = {
+                    lgemail=it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -133,8 +145,10 @@ fun LoginFormSection() {
             Spacer(modifier = Modifier.height(5.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = lgpassword,
+                onValueChange = {
+                    lgpassword=it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -170,47 +184,51 @@ fun LoginFormSection() {
                 )
                 Text(text = "Remember me")
             }
-        }
 
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+                Button(modifier = Modifier
+                    .width(120.dp),
+                    onClick = { sharedViewModel.checkCredentials(lgemail, lgpassword, context, navController) }) {
+                    Text("Login")
+                }
+            }
+
+            Text(modifier = Modifier
+                .padding(top = 60.dp, start = 100.dp),
+                text = "Don't have an account?",
+                color = MaterialTheme.colorScheme.onBackground,
+                fontSize = 18.sp,
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+
+            ) {
+                Button(modifier = Modifier
+                    .width(180.dp),
+                    onClick = {
+                        navController.navigate(route = Navigation.UserRegisterScreen.route)
+                    }) {
+                    Text("Create New Account")
+                }
+            }
+        }
     }
+
 }
+
 
 @Composable
 fun LoginBtnSection(navController: NavController){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
 
-        ) {
-        Button(modifier = Modifier
-            .width(120.dp),
-            onClick = { /* Handle register */ }) {
-            Text("Login")
-        }
-    }
-
-    Text(modifier = Modifier
-        .padding(top = 60.dp, start = 100.dp),
-        text = "Don't have an account?",
-        color = MaterialTheme.colorScheme.onBackground,
-        fontSize = 18.sp,
-    )
-
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 20.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-
-        ) {
-        Button(modifier = Modifier
-            .width(180.dp),
-            onClick = { navController.navigate(route = Navigation.UserRegisterScreen.route) }) {
-            Text("Create New Account")
-        }
-    }
 }

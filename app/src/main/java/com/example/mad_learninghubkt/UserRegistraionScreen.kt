@@ -47,9 +47,24 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mad_learninghubkt.data.UserData
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
 import com.example.mad_learninghubkt.ui.theme.BlueStart
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import java.util.Calendar
+
+var userData = UserData(
+    userName = "",
+    address = "",
+    livingCity = "",
+    dob = "",
+    nic = "",
+    email = "",
+    gender = "",
+    mobileNo = "",
+    password = ""
+)
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
@@ -68,8 +83,7 @@ fun UserRegistraionScreen(navController: NavHostController = rememberNavControll
                 .verticalScroll(rememberScrollState())
         ) {
             HeadingSection()
-            FormSection()
-            BtnSection(navController)
+            FormSection(navController)
         }
     }
 }
@@ -99,7 +113,17 @@ fun HeadingSection(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormSection(){
+fun FormSection(navController: NavController){
+
+    var userName: String by remember { mutableStateOf("") }
+    var address: String by remember { mutableStateOf("") }
+    var livingCity: String by remember { mutableStateOf("") }
+    var dob: String by remember { mutableStateOf("") }
+    var nic: String by remember { mutableStateOf("") }
+    var email: String by remember { mutableStateOf("") }
+    var gender: String by remember { mutableStateOf("") }
+    var mobileNo: String by remember { mutableStateOf("") }
+    var password: String by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -114,8 +138,10 @@ fun FormSection(){
         ) {
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = userName,
+                onValueChange = {
+                    userName = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -136,8 +162,10 @@ fun FormSection(){
             Spacer(modifier = Modifier.height(5.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = address,
+                onValueChange = {
+                    address = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -158,8 +186,10 @@ fun FormSection(){
             Spacer(modifier = Modifier.height(5.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = livingCity,
+                onValueChange = {
+                    livingCity = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -180,12 +210,15 @@ fun FormSection(){
             Spacer(modifier = Modifier.height(5.dp))
 
             var showDialog by remember { mutableStateOf(false) }
-            var selectedDate by remember { mutableStateOf("") }
+            //var selectedDate by remember { mutableStateOf("") }
             val context = LocalContext.current
 
             OutlinedTextField(
-                value = "",
-                onValueChange = { selectedDate = it },
+                value = dob,
+                onValueChange = {
+                    //selectedDate = it
+                    dob = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = Color.Transparent)
@@ -220,15 +253,17 @@ fun FormSection(){
             if (showDialog) {
                 showDatePicker(context) { year, month, dayOfMonth ->
                     // Set the selected date into the TextField
-                    selectedDate = "$dayOfMonth/${month + 1}/$year"
+                    dob = "$dayOfMonth/${month + 1}/$year"
                     showDialog = false
                 }
             }
             Spacer(modifier = Modifier.height(5.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = nic,
+                onValueChange = {
+                    nic = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -249,8 +284,10 @@ fun FormSection(){
             Spacer(modifier = Modifier.height(5.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = email,
+                onValueChange = {
+                    email = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -271,8 +308,10 @@ fun FormSection(){
             Spacer(modifier = Modifier.height(5.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = gender,
+                onValueChange = {
+                    gender = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -293,8 +332,10 @@ fun FormSection(){
             Spacer(modifier = Modifier.height(5.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = mobileNo,
+                onValueChange = {
+                    mobileNo = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -315,8 +356,10 @@ fun FormSection(){
             Spacer(modifier = Modifier.height(5.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = password,
+                onValueChange = {
+                    password = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -337,31 +380,51 @@ fun FormSection(){
             )
             Spacer(modifier = Modifier.height(5.dp))
 
+            userData = UserData(
+                userName = userName,
+                address = address,
+                livingCity = livingCity,
+                dob = dob,
+                nic = nic,
+                email = email,
+                gender = gender,
+                mobileNo = mobileNo,
+                password = password
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 70.dp, top = 40.dp),
+
+                ) {
+                Button(onClick = {
+                    //sharedViewModel.saveData(userData = userData, context = context)
+                    navController.navigate(route = Navigation.EmailVerificationScreen.route)
+                }) {
+                    Text("Register")
+                }
+                Spacer(modifier = Modifier.width(20.dp))
+
+                Button(onClick = {
+                    navController.navigate(route = Navigation.HomeScreen.route)
+                }) {
+                    Text("Skip Registraion")
+                }
+            }
+
         }
 
     }
-
 }
 
-@Composable
-fun BtnSection(navController: NavController){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 70.dp, top = 40.dp),
-
-    ) {
-        Button(onClick = { navController.navigate(route = Navigation.EmailVerificationScreen.route) }) {
-            Text("Register")
-        }
-        Spacer(modifier = Modifier.width(20.dp))
-        Button(onClick = {
-            navController.navigate(route = Navigation.HomeScreen.route)
-        }) {
-            Text("Skip Registraion")
-        }
-    }
-}
+//@SuppressLint("InvalidAnalyticsName")
+//@Composable
+//fun BtnSection(navController: NavController, sharedViewModel: SharedViewModel){
+//
+//    val context = LocalContext.current
+//
+//}
 
 //function pick the date from calendar
 fun showDatePicker(context: Context, onDateSelected: (Int, Int, Int) -> Unit) {
@@ -381,4 +444,8 @@ fun showDatePicker(context: Context, onDateSelected: (Int, Int, Int) -> Unit) {
     )
 
     datePickerDialog.show()
+}
+
+fun CreateDatabase(){
+    val db = Firebase.firestore
 }
