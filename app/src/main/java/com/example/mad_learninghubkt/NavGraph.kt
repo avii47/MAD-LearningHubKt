@@ -1,6 +1,7 @@
 package com.example.mad_learninghubkt
 
 import PersonalDetailsScreen
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -8,7 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.mad_learninghubkt.util.SharedViewModel
-
 
 @Composable
 fun SetupNavGraph1(
@@ -47,7 +47,7 @@ fun SetupNavGraph1(
         composable(
             route = Navigation.HomeScreen.route
         ) {
-            MainScreen()
+            MainScreen(sharedViewModel = sharedViewModel)
         }
 
         composable(
@@ -84,6 +84,7 @@ fun SetupProfileNavGraph(
 @Composable
 fun SetupHomeNavGraph(
     navController: NavHostController,
+    sharedViewModel: SharedViewModel
 ) {
     NavHost(
         navController = navController,
@@ -93,7 +94,7 @@ fun SetupHomeNavGraph(
         composable(
             route = Navigation.HomeScreen.route
         ) {
-            HomeScreen(navController)
+            HomeScreen(navController, sharedViewModel)
         }
 
         composable(

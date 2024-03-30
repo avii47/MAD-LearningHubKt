@@ -2,6 +2,8 @@ package com.example.mad_learninghubkt
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,12 +51,15 @@ import com.example.mad_learninghubkt.ui.theme.BlueStart
 import com.example.mad_learninghubkt.ui.theme.GreenStart
 import com.example.mad_learninghubkt.ui.theme.OrangeStart
 import com.example.mad_learninghubkt.ui.theme.PurpleStart
+import com.example.mad_learninghubkt.util.CourseDataStore
+import com.example.mad_learninghubkt.util.SharedViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun HomeScreen(navController: NavHostController = rememberNavController()) {
+fun HomeScreen(navController: NavHostController = rememberNavController(), sharedViewModel: SharedViewModel) {
+
     Scaffold(
         bottomBar = {
             Spacer(modifier = Modifier.height(80.dp))
@@ -132,10 +138,7 @@ fun TopSection() {
                 )
             }
         }
-
-
     }
-
 }
 
 fun getGradient(
@@ -146,6 +149,7 @@ fun getGradient(
         colors = listOf(startColor, endColor)
     )
 }
+
 @Composable
 fun CardSection() {
     Box(
@@ -287,38 +291,12 @@ fun CategoryItem(
     }
 }
 
-val courseList = listOf(
-    CoursesItem(
-        title = "Python Programming",
-        level = "Beginner",
-        overview = "After completing the A/L introductory Python course, students will have gained a foundational understanding of Python programming language. They will be equipped with essential skills to write and comprehend Python code, creating a solid groundwork for further exploration and application in various domains such as data science, web development, and automation.",
-        duration = 30,
-        fee = 30000,
-        max = 50,
-        publishedDate = "03/11/2024",
-        closingDate = "04/11/2024",
-        startingDate = "04/12/2024",
-        branches = "Colombo, Matara, Kandy",
-        image = R.drawable.python
-    ),
-
-    CoursesItem(
-        title = "Java Programming",
-        level = "Intermediate",
-        overview = "After completing the A/L introductory Python course, students will have gained a foundational understanding of Python programming language. They will be equipped with essential skills to write and comprehend Python code, creating a solid groundwork for further exploration and application in various domains such as data science, web development, and automation.",
-        duration = 45,
-        fee = 50000,
-        max = 30,
-        publishedDate = "03/05/2024",
-        closingDate = "04/05/2024",
-        startingDate = "04/07/2024",
-        branches = "Colombo, Matara, Kandy",
-        image = R.drawable.java
-    ),
-)
+val courseDataList = CourseDataStore.getCourseData()
 
 @Composable
 fun CourseSection(navController: NavController) {
+
+    // Use the fetched user data here
     Column {
         Text(
             text = "Courses for you",
@@ -327,8 +305,9 @@ fun CourseSection(navController: NavController) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(16.dp)
         )
-        courseList.forEach { index ->
-            CourseItem(index = courseList.indexOf(index), navController)
+
+        courseDataList.forEachIndexed { index, courseItem ->
+            CourseItem(index, courseItem, navController)
         }
     }
 }
@@ -336,10 +315,12 @@ fun CourseSection(navController: NavController) {
 @Composable
 fun CourseItem(
     index: Int,
+    course: CoursesItem,
     navController: NavController
 ) {
-    val course = courseList[index]
-    val iconPainter = painterResource(id = course.image)
+
+    //val iconPainter = painterResource(id = course.image)
+    val iconPainter = painterResource(id = R.drawable.java)
 
     Box(
         modifier = Modifier
@@ -354,7 +335,7 @@ fun CourseItem(
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .fillMaxWidth()
                 .height(120.dp)
-                .padding(vertical = 12.dp, horizontal = 16.dp),
+                .padding(vertical = 12.dp, horizontal = 10.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
