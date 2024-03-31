@@ -1,6 +1,7 @@
 package com.example.mad_learninghubkt.data
 
 data class CoursesItem(
+    val cid: Int,
     val title: String,
     val overview: String,
     val level: String,

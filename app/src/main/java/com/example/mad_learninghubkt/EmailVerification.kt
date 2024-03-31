@@ -179,10 +179,12 @@ fun verifyOTP(
     navController: NavController)
 {
     if (enteredOTP == generatedOTP) {
+
         Toast.makeText(context, "Email Verified", Toast.LENGTH_SHORT).show()
-        sharedViewModel.saveData(userData = userData, context = context)
+        sharedViewModel.saveUserData(userData = userData, context = context)
         Toast.makeText(context, "Account Created Successful", Toast.LENGTH_SHORT).show()
         navController.navigate(route = Navigation.UserLoginScreen.route)
+
     } else {
         Toast.makeText(context, "OTP is incorrect", Toast.LENGTH_SHORT).show()
     }

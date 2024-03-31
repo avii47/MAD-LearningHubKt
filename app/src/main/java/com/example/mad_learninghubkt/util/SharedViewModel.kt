@@ -1,28 +1,28 @@
 package com.example.mad_learninghubkt.util
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import android.widget.Toast.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.mad_learninghubkt.LoginResult
 import com.example.mad_learninghubkt.Navigation
+import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.data.UserData
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class SharedViewModel() : ViewModel() {
 
-    fun saveData(
+    fun saveUserData(
         userData: UserData,
         context: Context
     ) = CoroutineScope(Dispatchers.IO).launch {
@@ -41,9 +41,6 @@ class SharedViewModel() : ViewModel() {
         }
     }
 
-    private val _loginResult = MutableStateFlow<LoginResult?>(null)
-    val loginResult: StateFlow<LoginResult?> = _loginResult
-
     fun checkCredentials(email: String, password: String, context: Context, navController: NavController) {
         viewModelScope.launch {
             try {
@@ -53,23 +50,22 @@ class SharedViewModel() : ViewModel() {
                     val userData = document.data
                     val storedPassword = userData?.get("password") as? String
                     if (storedPassword == password) {
-                        handleSuccessfulLogin(document, context)
-                        _loginResult.value = LoginResult.Success(userData)
+                        handleSuccessfulLogin(document)
                         navController.navigate(route = Navigation.HomeScreen.route)
 
                     } else {
-                        _loginResult.value = LoginResult.Error("Incorrect password")
+                        makeText(context, "Incorrect password", LENGTH_SHORT).show()
                     }
                 } else {
-                    _loginResult.value = LoginResult.Error("User not found")
+                    makeText(context, "User not found", LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                _loginResult.value = LoginResult.Error("Error checking credentials: ${e.message}")
+                makeText(context, "Error checking credentials: ${e.message}", LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun handleSuccessfulLogin(document: DocumentSnapshot, context: Context) {
+    private fun handleSuccessfulLogin(document: DocumentSnapshot) {
 
         // Retrieve user data from Firestore document
         val userName = document.getString("userName") ?: ""
@@ -94,11 +90,59 @@ class SharedViewModel() : ViewModel() {
             mobileNo = mobileNo,
             password = password
         )
-
-        //makeText(context, userName, LENGTH_SHORT).show()
-
         UserDataStore.setUserData(userData)
     }
+
+    fun fetchCourseData(context: Context) {
+        val db = FirebaseFirestore.getInstance()
+        val collectionRef = db.collection("courses")
+
+        viewModelScope.launch {
+            try {
+                val querySnapshot = collectionRef.get().await()
+
+                for (document in querySnapshot.documents) {
+                    val cid = (document.get("cid") as? Long)?.toInt() ?: 0
+                    val title = document.get("title") as? String ?: ""
+                    val overview = document.get("overview") as? String ?: ""
+                    val level = document.get("level") as? String ?: ""
+                    val duration = (document.get("duration") as? Long)?.toInt() ?: 0
+                    val fee = (document.get("fee") as? Long)?.toInt() ?: 0
+                    val max = (document.get("max") as? Long)?.toInt() ?: 0
+                    val publishedDate = document.get("published date") as? String ?: ""
+                    val closingDate = document.get("closing date") as? String ?: ""
+                    val startingDate = document.get("starting date") as? String ?: ""
+                    val branches = document.get("branches") as? String ?: ""
+                    val image = (document.get("image") as? Long)?.toInt() ?: 0
+
+                    val courseItem = CoursesItem(
+                        cid = cid,
+                        title = title,
+                        overview = overview,
+                        level = level,
+                        duration = duration,
+                        fee = fee,
+                        max = max,
+                        publishedDate = publishedDate,
+                        closingDate = closingDate,
+                        startingDate = startingDate,
+                        branches = branches,
+                        image = image
+                    )
+
+                    // Add the created course item to the CourseDataStore
+                    CourseDataStore.setCourseData(courseItem)
+                }
+
+
+            } catch (e: Exception) {
+                // Handle exceptions
+                Toast.makeText(context, "Error fetching course data", Toast.LENGTH_SHORT).show()
+                throw e
+            }
+        }
+    }
+
 }
 
     fun retrieveData(

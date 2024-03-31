@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.ui.theme.MADLearningHubKtTheme
@@ -17,7 +18,13 @@ class MainActivity : ComponentActivity() {
 
     private val sharedViewModel: SharedViewModel by viewModels()
     lateinit var navController: NavHostController
+    val context = this
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //call the function that get the course list from the firebase
+        sharedViewModel.fetchCourseData(context)
+
         super.onCreate(savedInstanceState)
         setContent {
             MADLearningHubKtTheme {

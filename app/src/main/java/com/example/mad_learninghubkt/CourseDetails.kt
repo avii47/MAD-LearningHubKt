@@ -1,6 +1,7 @@
 package com.example.mad_learninghubkt
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -107,8 +108,9 @@ fun CourseHeadingSection(){
 
 @Composable
 fun CourseCardSection(courseId: Int) {
-    val selectedCourse = courseList[courseId]
-    val iconPainter = painterResource(id = selectedCourse.image)
+    val selectedCourse = courseDataList[courseId]
+    //val iconPainter = painterResource(id = selectedCourse.image)
+    val iconPainter = painterResource(id = R.drawable.java)
 
     Box(
         modifier = Modifier
@@ -148,8 +150,10 @@ fun CourseCardSection(courseId: Int) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CourseDetailsSection(courseId: Int){
-    val selectedCourse = courseList[courseId]
+fun CourseDetailsSection(index: Int){
+
+    val selectedCourse = courseDataList[index]
+
     Box(
         modifier = Modifier
             .padding(16.dp)

@@ -1,19 +1,20 @@
 package com.example.mad_learninghubkt
 
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mad_learninghubkt.util.SharedViewModel
 
 @Composable
-fun BottomNavGraph(navController: NavHostController) {
+fun BottomNavGraph(navController: NavHostController, sharedViewModel: SharedViewModel) {
     NavHost(navController = navController, startDestination = BottomBarScreen.Home.route) {
         composable(BottomBarScreen.Home.route) {
-            //HomeScreen()
             lateinit var homeNavController: NavHostController
             homeNavController = rememberNavController()
-            SetupHomeNavGraph(navController = homeNavController)
+            SetupHomeNavGraph(navController = homeNavController, sharedViewModel)
         }
         composable(BottomBarScreen.Locations.route) {
             lateinit var branchNavController: NavHostController
