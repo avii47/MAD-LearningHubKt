@@ -12,5 +12,6 @@ data class CoursesItem(
     val closingDate: String,
     val startingDate: String,
     val branches: String,
-    val image: Int
+    val image: Int,
+    val category: String
 )

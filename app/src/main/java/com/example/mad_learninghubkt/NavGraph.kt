@@ -94,7 +94,7 @@ fun SetupHomeNavGraph(
         composable(
             route = Navigation.HomeScreen.route
         ) {
-            HomeScreen(navController, sharedViewModel)
+            HomeScreen(navController)
         }
 
         composable(
