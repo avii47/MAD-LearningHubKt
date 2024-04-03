@@ -1,9 +1,6 @@
 package com.example.mad_learninghubkt
 
 import android.annotation.SuppressLint
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,20 +27,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.data.CategoriesItem
 import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
@@ -52,13 +49,15 @@ import com.example.mad_learninghubkt.ui.theme.GreenStart
 import com.example.mad_learninghubkt.ui.theme.OrangeStart
 import com.example.mad_learninghubkt.ui.theme.PurpleStart
 import com.example.mad_learninghubkt.util.CourseDataStore
-import com.example.mad_learninghubkt.util.SharedViewModel
 
+val courseDataList = CourseDataStore.getCourseData()
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 //@Preview
 @Composable
-fun HomeScreen(navController: NavHostController = rememberNavController(), sharedViewModel: SharedViewModel) {
+fun HomeScreen(navController: NavController) {
+    var filterTitle by remember { mutableStateOf("Courses for you") }
+    var filteredCourseDataList by remember { mutableStateOf(courseDataList) }
 
     Scaffold(
         bottomBar = {
@@ -73,9 +72,12 @@ fun HomeScreen(navController: NavHostController = rememberNavController(), share
         ) {
             TopSection()
             CardSection()
-            CategorySection()
+            CategorySection() { categoryName ->
+                filterTitle = "$categoryName Courses"
+                filteredCourseDataList = courseDataList.filter { it.category == categoryName }
+            }
             Spacer(modifier = Modifier.size(16.dp))
-            CourseSection(navController)
+            CourseSection(filterTitle, filteredCourseDataList, navController)
         }
     }
 }
@@ -182,7 +184,6 @@ fun CardSection() {
                     contentDescription = "Short Courses Card",
                     modifier = Modifier.fillMaxSize()
                 )
-
             }
         }
     }
@@ -227,7 +228,7 @@ val categoryList = listOf(
 )
 
 @Composable
-fun CategorySection() {
+fun CategorySection(onCategoryClicked: (String) -> Unit) {
     Column {
         Text(
             text = "Categories",
@@ -238,8 +239,10 @@ fun CategorySection() {
         )
 
         LazyRow {
-            items(categoryList.size) {
-                CategoryItem(it)
+            items(categoryList.size) { index ->
+                CategoryItem(index) { categoryName ->
+                    onCategoryClicked(categoryName)
+                }
             }
         }
     }
@@ -247,7 +250,8 @@ fun CategorySection() {
 
 @Composable
 fun CategoryItem(
-    index: Int
+    index: Int,
+    onCategoryClicked: (String) -> Unit
 ) {
     val category = categoryList[index]
     val iconPainter = painterResource(id = category.icon)
@@ -262,7 +266,9 @@ fun CategoryItem(
                 .clip(RoundedCornerShape(25.dp))
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .size(120.dp)
-                .clickable {}
+                .clickable {
+                    onCategoryClicked(category.name)
+                }
                 .padding(13.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -291,22 +297,22 @@ fun CategoryItem(
     }
 }
 
-val courseDataList = CourseDataStore.getCourseData()
-
 @Composable
-fun CourseSection(navController: NavController) {
-
-    // Use the fetched user data here
+fun CourseSection(
+    filterTitle: String,
+    filteredCourseDataList: List<CoursesItem>,
+    navController: NavController
+) {
     Column {
         Text(
-            text = "Courses for you",
+            text = filterTitle,
             fontSize = 24.sp,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(16.dp)
         )
 
-        courseDataList.forEachIndexed { index, courseItem ->
+        filteredCourseDataList.forEachIndexed { index, courseItem ->
             CourseItem(index, courseItem, navController)
         }
     }
@@ -318,13 +324,12 @@ fun CourseItem(
     course: CoursesItem,
     navController: NavController
 ) {
-
     //val iconPainter = painterResource(id = course.image)
     val iconPainter = painterResource(id = R.drawable.java)
 
     Box(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(vertical = 10.dp, horizontal = 16.dp)
             .clickable {
                 navController.navigate(route = "${Navigation.CourseDetails.route}/${index}")
             }
@@ -335,7 +340,7 @@ fun CourseItem(
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .fillMaxWidth()
                 .height(120.dp)
-                .padding(vertical = 12.dp, horizontal = 10.dp),
+                .padding(vertical = 12.dp, horizontal = 12.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 

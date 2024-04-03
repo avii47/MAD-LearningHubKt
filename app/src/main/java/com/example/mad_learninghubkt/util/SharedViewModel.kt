@@ -114,6 +114,7 @@ class SharedViewModel() : ViewModel() {
                     val startingDate = document.get("starting date") as? String ?: ""
                     val branches = document.get("branches") as? String ?: ""
                     val image = (document.get("image") as? Long)?.toInt() ?: 0
+                    val category = document.get("category") as? String ?: ""
 
                     val courseItem = CoursesItem(
                         cid = cid,
@@ -127,7 +128,8 @@ class SharedViewModel() : ViewModel() {
                         closingDate = closingDate,
                         startingDate = startingDate,
                         branches = branches,
-                        image = image
+                        image = image,
+                        category = category
                     )
 
                     // Add the created course item to the CourseDataStore
