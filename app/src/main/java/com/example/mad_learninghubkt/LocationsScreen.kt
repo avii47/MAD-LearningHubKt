@@ -55,7 +55,7 @@ import com.google.maps.android.compose.rememberMarkerState
 @Composable
 fun LocationsScreen(branchId:Int) {
 
-    val selectedBranch = branchList[branchId]
+    val selectedBranch = branchDataList[branchId]
     val defaultCameraPosition = CameraPosition.fromLatLngZoom(selectedBranch.latLng, 7f)
 
     Scaffold {

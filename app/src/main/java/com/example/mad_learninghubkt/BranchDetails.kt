@@ -84,8 +84,8 @@ fun BranchHeadingSection(){
 
 @Composable
 fun BranchCardSection(branchId: Int) {
-    val selectedBranch = branchList[branchId]
-    val iconPainter = painterResource(id = selectedBranch.image)
+    val selectedBranch = branchDataList[branchId]
+    val iconPainter = painterResource(id = R.drawable.icon_map)
 
     Box(
         modifier = Modifier
@@ -125,7 +125,7 @@ fun BranchCardSection(branchId: Int) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BranchDetailsSection(branchId: Int){
-    val selectedBranch = branchList[branchId]
+    val selectedBranch = branchDataList[branchId]
     Box(
         modifier = Modifier
             .padding(16.dp)

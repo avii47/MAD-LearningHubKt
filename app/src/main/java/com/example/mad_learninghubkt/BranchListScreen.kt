@@ -32,7 +32,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.data.BranchesItem
+import com.example.mad_learninghubkt.util.BranchDataStore
+import com.example.mad_learninghubkt.util.CourseDataStore
 import com.google.android.gms.maps.model.LatLng
+
+val branchDataList = BranchDataStore.getBranchData()
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
@@ -73,37 +77,12 @@ fun BranchListHeadingSection(){
     }
 }
 
-val branchList = listOf(
-    BranchesItem(
-        branchName = "Matara Campus",
-        branchNo = "MT221",
-        overview = "In molding the lives of the youth and adults, the standards we maintain and the teaching and learning tools, materials and platforms we use are diverse and widely recognized ensuring the regular modernization of the global standards of learning.  The student generation is exposed to a wide variety of experience in not only the learning, but also in entertainment, religious and cultural activities and talent displays to excel in the competitive educational arena calibrating the true mark of the Sri Lankan Southerners.",
-        district = "Matara",
-        address = "2nd Floor, No. 26, NSB Building, අනගාරික ධර්මපාල මාවත, Matara 81000",
-        contactNo = "0412 237 544",
-        courses = "Java Programming, Python Programming",
-        latLng = LatLng(5.9493, 80.5463),
-        image = R.drawable.icon_map
-    ),
-
-    BranchesItem(
-        branchName = "Colombo Campus",
-        branchNo = "CO177",
-        overview = "Today NIBM Colombo center possesses fully air-conditioned and well-equipped modern computer labs, classroom facilities and study areas to make students more comfortable and freer to study. Students are highly benefited from an air-conditioned modern library consisting of thousands of educational books and a clean large cafeteria with many more facilities.",
-        district = "Colombo",
-        address = "120/5 Vidya Mawatha, Colombo 00700",
-        contactNo = "0117 321 000",
-        courses = "Java Programming, Python Programming",
-        latLng = LatLng(6.9063, 79.8708),
-        image = R.drawable.icon_map
-    ),
-)
-
 @Composable
 fun BranchListSection(navController: NavController) {
+
     Column {
-        branchList.forEach { index ->
-            BranchItem(index = branchList.indexOf(index), navController)
+        branchDataList.forEachIndexed { index, BranchItem ->
+            BranchItem(index, BranchItem, navController)
         }
     }
 }
@@ -111,10 +90,11 @@ fun BranchListSection(navController: NavController) {
 @Composable
 fun BranchItem(
     index: Int,
+    branch: BranchesItem,
     navController: NavController
 ) {
-    val branch = branchList[index]
-    val iconPainter = painterResource(id = branch.image)
+
+    val iconPainter = painterResource(id = R.drawable.icon_map)
 
     Box(
         modifier = Modifier
