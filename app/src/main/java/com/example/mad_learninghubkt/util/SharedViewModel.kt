@@ -1,20 +1,22 @@
 package com.example.mad_learninghubkt.util
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import android.widget.Toast.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.mad_learninghubkt.Navigation
+import com.example.mad_learninghubkt.data.BranchesItem
 import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.data.UserData
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.type.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -143,6 +145,64 @@ class SharedViewModel() : ViewModel() {
                 throw e
             }
         }
+    }
+
+    fun fetchBranchData(context: Context) {
+        val db = FirebaseFirestore.getInstance()
+        val collectionRef = db.collection("branches")
+
+        viewModelScope.launch {
+            try {
+                val querySnapshot = collectionRef.get().await()
+
+                for (document in querySnapshot.documents) {
+                    val branchNo = document.get("branch no") as? String ?: ""
+                    val branchName = document.get("branch name") as? String ?: ""
+                    val overview = document.get("overview") as? String ?: ""
+                    val district = document.get("district") as? String ?: ""
+                    val address = document.get("address") as? String ?: ""
+                    val contactNo = document.get("contact No") as? String ?: ""
+                    val courses = document.get("courses") as? String ?: ""
+                    val geoPoint = document.getGeoPoint("map")
+                    val latLng = if (geoPoint != null) {
+                        convertGeoPointToLatLng(geoPoint)
+                        } else {
+                            com.google.android.gms.maps.model.LatLng(
+                                0.0,
+                                0.0
+                        )
+                    }
+                    val image = (document.get("image") as? Long)?.toInt() ?: 0
+
+                    val branchesItem = BranchesItem(
+                        branchNo = branchNo,
+                        branchName = branchName,
+                        overview = overview,
+                        district = district,
+                        address = address,
+                        contactNo = contactNo,
+                        courses = courses,
+                        latLng = latLng,
+                        image = image
+                    )
+
+                    Toast.makeText(context, branchName, Toast.LENGTH_SHORT).show()
+
+                    // Add the created course item to the CourseDataStore
+                    BranchDataStore.setBranchData(branchesItem)
+                }
+
+
+            } catch (e: Exception) {
+                // Handle exceptions
+                Toast.makeText(context, "Error fetching course data", Toast.LENGTH_SHORT).show()
+                throw e
+            }
+        }
+    }
+
+    fun convertGeoPointToLatLng(geoPoint: GeoPoint): com.google.android.gms.maps.model.LatLng {
+        return com.google.android.gms.maps.model.LatLng(geoPoint.latitude, geoPoint.longitude)
     }
 
 }
