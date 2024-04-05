@@ -39,6 +39,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.firestore.GeoPoint
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
@@ -55,8 +56,11 @@ import com.google.maps.android.compose.rememberMarkerState
 @Composable
 fun LocationsScreen(branchId:Int) {
 
+
+
     val selectedBranch = branchDataList[branchId]
-    val defaultCameraPosition = CameraPosition.fromLatLngZoom(selectedBranch.latLng, 7f)
+    var latlng = convertGeoPointToLatLng(selectedBranch.latLng)
+    val defaultCameraPosition = CameraPosition.fromLatLngZoom(latlng, 7f)
 
     Scaffold {
         Text(
@@ -84,7 +88,7 @@ fun LocationsScreen(branchId:Int) {
                 .fillMaxHeight()
                 .padding(top = 60.dp, start = 16.dp, end = 16.dp, bottom = 100.dp),
             name = selectedBranch.branchName,
-            location = selectedBranch.latLng,
+            location = latlng,
             address = selectedBranch.address,
             cameraPositionState = cameraPositionState,
             onMapLoaded = {
@@ -103,6 +107,10 @@ fun LocationsScreen(branchId:Int) {
             }
         }
     }
+}
+
+fun convertGeoPointToLatLng(geoPoint: GeoPoint): LatLng {
+    return LatLng(geoPoint.latitude, geoPoint.longitude)
 }
 
 @Composable

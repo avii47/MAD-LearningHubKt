@@ -445,7 +445,3 @@ fun showDatePicker(context: Context, onDateSelected: (Int, Int, Int) -> Unit) {
 
     datePickerDialog.show()
 }
-
-fun CreateDatabase(){
-    val db = Firebase.firestore
-}

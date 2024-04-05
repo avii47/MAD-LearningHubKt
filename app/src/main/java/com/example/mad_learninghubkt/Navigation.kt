@@ -19,4 +19,13 @@ sealed class Navigation(val route: String) {
     object BranchListScreen: Navigation(route = "branch_list_screen")
     object BranchDetails: Navigation(route = "branch_details")
     object LocationScreen: Navigation(route = "location_screen")
+    object AdminDashboardScreen: Navigation(route = "admin_dashboard_screen")
+    object AdminCoursesScreen: Navigation(route = "admin_courses_screen")
+    object AdminUsersScreen: Navigation(route = "admin_users_screen")
+    object AdminBranchScreen: Navigation(route = "admin_branch_screen")
+    object CourseOperationsScreen: Navigation(route = "course_operations_screen")
+    object BranchOperationsScreen: Navigation(route = "branch_operations_screen")
+    object UserOperationsScreen: Navigation(route = "user_operations_screen")
+    object AddCourseScreen: Navigation(route = "add_course_screen")
+    object AddBranchScreen: Navigation(route = "add_branch_screen")
 }

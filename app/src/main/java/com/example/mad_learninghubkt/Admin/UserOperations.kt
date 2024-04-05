@@ -44,15 +44,19 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.mad_learninghubkt.R
 import com.example.mad_learninghubkt.showDatePicker
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
 import com.example.mad_learninghubkt.ui.theme.BlueStart
+import com.example.mad_learninghubkt.util.SharedViewModel
+
+var selectedUserId = ""
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun UserOperations() {
+fun UserOperations(navController: NavController, sharedViewModel: SharedViewModel, userId: Int) {
 
     Scaffold {padding ->
 
@@ -62,15 +66,18 @@ fun UserOperations() {
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            UserDetailsSection()
-            UserDetailsBtnSection()
+            UserDetailsSection(userId)
+            UserDetailsBtnSection(navController, sharedViewModel)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserDetailsSection() {
+fun UserDetailsSection(index: Int) {
+
+    val adminSelectedUser = adminUsersDataList[index]
+    selectedUserId = adminSelectedUser.email
 
     Box(
         modifier = Modifier
@@ -89,7 +96,7 @@ fun UserDetailsSection() {
             )
 
             OutlinedTextField(
-                value = "",
+                value = adminSelectedUser.userName,
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -108,7 +115,7 @@ fun UserDetailsSection() {
             )
 
             OutlinedTextField(
-                value = "",
+                value = adminSelectedUser.address,
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -126,7 +133,7 @@ fun UserDetailsSection() {
             )
 
             OutlinedTextField(
-                value = "",
+                value = adminSelectedUser.livingCity,
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -143,12 +150,8 @@ fun UserDetailsSection() {
                 readOnly = true,
             )
 
-            var showDialog by remember { mutableStateOf(false) }
-            //var selectedDate by remember { mutableStateOf("") }
-            val context = LocalContext.current
-
             OutlinedTextField(
-                value = "",
+                value = adminSelectedUser.dob,
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -164,32 +167,11 @@ fun UserDetailsSection() {
                 ),
                 textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    // Handle done action if needed
-                }),
-                trailingIcon = {
-                    IconButton(
-                        onClick = { showDialog = true },
-                        modifier = Modifier.height(25.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_calendar),
-                            contentDescription = "Calendar"
-                        )
-                    }
-                }
+                readOnly = true,
             )
 
-            if (showDialog) {
-                showDatePicker(context) { year, month, dayOfMonth ->
-                    // Set the selected date into the TextField
-                    var dob = "$dayOfMonth/${month + 1}/$year"
-                    showDialog = false
-                }
-            }
-
             OutlinedTextField(
-                value = "",
+                value = adminSelectedUser.nic,
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -207,7 +189,7 @@ fun UserDetailsSection() {
             )
 
             OutlinedTextField(
-                value = "",
+                value = adminSelectedUser.email,
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -225,7 +207,7 @@ fun UserDetailsSection() {
             )
 
             OutlinedTextField(
-                value = "",
+                value = adminSelectedUser.gender,
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -243,7 +225,7 @@ fun UserDetailsSection() {
             )
 
             OutlinedTextField(
-                value = "",
+                value = adminSelectedUser.mobileNo,
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -264,7 +246,9 @@ fun UserDetailsSection() {
 }
 
 @Composable
-fun UserDetailsBtnSection(){
+fun UserDetailsBtnSection(navController: NavController, sharedViewModel: SharedViewModel){
+
+    val context = LocalContext.current
 
     Row(
         modifier = Modifier
@@ -276,14 +260,16 @@ fun UserDetailsBtnSection(){
     ) {
         Button(modifier = Modifier
             .width(150.dp),
-            onClick = { /* Handle register */ }) {
+            onClick = {  }) {
             Text("Banned User")
         }
         Spacer(modifier = Modifier.width(20.dp))
 
         Button(modifier = Modifier
             .width(150.dp),
-            onClick = { /* Handle register */ }) {
+            onClick = {
+                sharedViewModel.deleteUser(selectedUserId, context = context, navController)
+            }) {
             Text("Delete User")
         }
     }

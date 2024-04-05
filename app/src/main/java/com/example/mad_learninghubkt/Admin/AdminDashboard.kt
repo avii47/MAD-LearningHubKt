@@ -26,12 +26,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.mad_learninghubkt.Navigation
 import com.example.mad_learninghubkt.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun AdminDashboard() {
+fun AdminDashboard(navController: NavController) {
 
     Scaffold {padding ->
 
@@ -41,13 +43,13 @@ fun AdminDashboard() {
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            DashboardContent()
+            DashboardContent(navController)
         }
     }
 }
 
 @Composable
-fun DashboardContent(){
+fun DashboardContent(navController: NavController){
 
     Text(
         text = "Dashboard",
@@ -67,7 +69,9 @@ fun DashboardContent(){
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .fillMaxWidth()
                 .height(80.dp)
-                .clickable {}
+                .clickable {
+                    navController.navigate(route = Navigation.AdminCoursesScreen.route)
+                }
                 .padding(vertical = 12.dp, horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -103,7 +107,9 @@ fun DashboardContent(){
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .fillMaxWidth()
                 .height(80.dp)
-                .clickable {}
+                .clickable {
+                    navController.navigate(route = Navigation.AdminUsersScreen.route)
+                }
                 .padding(vertical = 12.dp, horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -138,7 +144,9 @@ fun DashboardContent(){
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .fillMaxWidth()
                 .height(80.dp)
-                .clickable {}
+                .clickable {
+                    navController.navigate(route = Navigation.AdminBranchScreen.route)
+                }
                 .padding(vertical = 12.dp, horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {

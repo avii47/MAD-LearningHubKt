@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
         //call the function that get the course list from the firebase
         sharedViewModel.fetchCourseData(context)
         sharedViewModel.fetchBranchData(context)
+        sharedViewModel.fetchAllUsersData(context)
 
         super.onCreate(savedInstanceState)
         setContent {

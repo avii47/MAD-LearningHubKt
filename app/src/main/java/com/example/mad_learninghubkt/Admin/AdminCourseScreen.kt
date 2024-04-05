@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -26,12 +27,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.mad_learninghubkt.CourseItem
+import com.example.mad_learninghubkt.Navigation
 import com.example.mad_learninghubkt.R
+import com.example.mad_learninghubkt.data.CoursesItem
+import com.example.mad_learninghubkt.util.CourseDataStore
+
+val adminCourseDataList = CourseDataStore.getCourseData()
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun AdminCourseScreen() {
+fun AdminCourseScreen(navController: NavController) {
 
     Scaffold {padding ->
 
@@ -41,14 +49,14 @@ fun AdminCourseScreen() {
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            CourseFunctions()
-            CourseList()
+            CourseFunctions(navController)
+            CourseList(navController)
         }
     }
 }
 
 @Composable
-fun CourseFunctions(){
+fun CourseFunctions(navController: NavController){
 
     Text(
         text = "Courses",
@@ -68,7 +76,9 @@ fun CourseFunctions(){
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .fillMaxWidth()
                 .height(80.dp)
-                .clickable {}
+                .clickable {
+                    navController.navigate(route = Navigation.AddCourseScreen.route)
+                }
                 .padding(vertical = 12.dp, horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -95,6 +105,73 @@ fun CourseFunctions(){
 }
 
 @Composable
-fun CourseList(){
+fun CourseList(navController: NavController){
 
+    adminCourseDataList.forEachIndexed { index, courseItem ->
+        AdminCourseItem(index, courseItem, navController)
+    }
+}
+
+@Composable
+fun AdminCourseItem(
+    index: Int,
+    course: CoursesItem,
+    navController: NavController
+) {
+    //val iconPainter = painterResource(id = course.image)
+    val iconPainter = painterResource(id = R.drawable.java)
+
+    Box(
+        modifier = Modifier
+            .padding(vertical = 10.dp, horizontal = 16.dp)
+            .clickable {
+                navController.navigate(route = "${Navigation.CourseOperationsScreen.route}/${index}")
+            }
+    ) {
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(25.dp))
+                .background(MaterialTheme.colorScheme.secondaryContainer)
+                .fillMaxWidth()
+                .height(120.dp)
+                .padding(vertical = 12.dp, horizontal = 12.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Image(
+                    painter = iconPainter,
+                    contentDescription = course.title,
+                    modifier = Modifier.width(60.dp)
+                )
+
+                Column {
+                    Text(
+                        text = course.title,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        text = course.level,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        text = course.duration.toString() + " hours",
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
 }

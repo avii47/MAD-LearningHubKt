@@ -2,16 +2,16 @@ package com.example.mad_learninghubkt.data
 
 data class CoursesItem(
     val cid: Int,
-    val title: String,
-    val overview: String,
+    var title: String,
+    var overview: String,
     val level: String,
-    val duration: Int,
-    val fee: Int,
-    val max: Int,
-    val publishedDate: String,
-    val closingDate: String,
-    val startingDate: String,
-    val branches: String,
+    var duration: Int,
+    var fee: Int,
+    var max: Int,
+    var publishedDate: String,
+    var closingDate: String,
+    var startingDate: String,
+    var branches: String,
     val image: Int,
     val category: String
 )
