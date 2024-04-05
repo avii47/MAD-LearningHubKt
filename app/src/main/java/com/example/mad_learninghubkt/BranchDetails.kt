@@ -125,7 +125,9 @@ fun BranchCardSection(branchId: Int) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BranchDetailsSection(branchId: Int){
+
     val selectedBranch = branchDataList[branchId]
+
     Box(
         modifier = Modifier
             .padding(16.dp)

@@ -8,6 +8,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.mad_learninghubkt.Admin.AddBranch
+import com.example.mad_learninghubkt.Admin.AddCourse
+import com.example.mad_learninghubkt.Admin.AdminBranchScreen
+import com.example.mad_learninghubkt.Admin.AdminCourseScreen
+import com.example.mad_learninghubkt.Admin.AdminDashboard
+import com.example.mad_learninghubkt.Admin.AdminUsersScreen
+import com.example.mad_learninghubkt.Admin.BranchOperations
+import com.example.mad_learninghubkt.Admin.CourseOperations
+import com.example.mad_learninghubkt.Admin.UserOperations
 import com.example.mad_learninghubkt.util.SharedViewModel
 
 @Composable
@@ -54,6 +63,66 @@ fun SetupNavGraph1(
             route = Navigation.PersonalDetails.route
         ) {
             PersonalDetailsScreen()
+        }
+
+        composable(
+            route = Navigation.AdminDashboardScreen.route
+        ) {
+            AdminDashboard(navController = navController)
+        }
+
+        composable(
+            route = Navigation.AdminCoursesScreen.route
+        ) {
+            AdminCourseScreen(navController = navController)
+        }
+
+        composable(
+            route = Navigation.AdminUsersScreen.route
+        ) {
+            AdminUsersScreen(navController = navController)
+        }
+
+        composable(
+            route = Navigation.AdminBranchScreen.route
+        ) {
+            AdminBranchScreen(navController = navController)
+        }
+
+        composable(
+            route = Navigation.AddCourseScreen.route
+        ) {
+            AddCourse(navController = navController, sharedViewModel = sharedViewModel)
+        }
+
+        composable(
+            route = Navigation.AddBranchScreen.route
+        ) {
+            AddBranch(navController = navController, sharedViewModel = sharedViewModel)
+        }
+
+        composable(
+            route = "${Navigation.CourseOperationsScreen.route}/{courseId}",
+            arguments = listOf(navArgument("courseId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0
+            CourseOperations(navController, sharedViewModel = sharedViewModel, courseId)
+        }
+
+        composable(
+            route = "${Navigation.BranchOperationsScreen.route}/{branchId}",
+            arguments = listOf(navArgument("branchId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val branchId = backStackEntry.arguments?.getInt("branchId") ?: 0
+            BranchOperations(navController, sharedViewModel = sharedViewModel, branchId)
+        }
+
+        composable(
+            route = "${Navigation.UserOperationsScreen.route}/{userId}",
+            arguments = listOf(navArgument("userId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getInt("branchId") ?: 0
+            UserOperations(navController, sharedViewModel = sharedViewModel, userId)
         }
     }
 }

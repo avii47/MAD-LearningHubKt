@@ -1,15 +1,15 @@
 package com.example.mad_learninghubkt.data
 
-import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.GeoPoint
 
 data class BranchesItem(
-    val branchName: String,
+    var branchName: String,
     val branchNo: String,
     val overview: String,
-    val district: String,
-    val address: String,
-    val contactNo: String,
-    val courses: String,
-    val latLng: LatLng,
+    var district: String,
+    var address: String,
+    var contactNo: String,
+    var courses: String,
+    var latLng: GeoPoint,
     val image: Int,
 )

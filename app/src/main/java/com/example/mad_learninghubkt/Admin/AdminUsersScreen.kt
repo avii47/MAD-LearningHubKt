@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -26,12 +27,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.mad_learninghubkt.Navigation
 import com.example.mad_learninghubkt.R
+import com.example.mad_learninghubkt.data.BranchesItem
+import com.example.mad_learninghubkt.data.UserData
+import com.example.mad_learninghubkt.util.AllUsersDataStore
+import com.example.mad_learninghubkt.util.BranchDataStore
+import com.example.mad_learninghubkt.util.CourseDataStore
+import com.example.mad_learninghubkt.util.UserDataStore
+
+val adminUsersDataList = AllUsersDataStore.getAllUsersData()
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun AdminUsersScreen() {
+fun AdminUsersScreen(navController: NavController) {
 
     Scaffold {padding ->
 
@@ -42,7 +53,7 @@ fun AdminUsersScreen() {
                 .verticalScroll(rememberScrollState())
         ) {
             UserFunctions()
-            UserList()
+            UserList(navController)
         }
     }
 }
@@ -60,9 +71,67 @@ fun UserFunctions(){
 }
 
 @Composable
-fun UserList(){
+fun UserList(navController: NavController){
 
+    adminUsersDataList.forEachIndexed { index, userItem ->
+        AdminUserItem(index, userItem, navController)
+    }
 }
 
+@Composable
+fun AdminUserItem(
+    index: Int,
+    user: UserData,
+    navController: NavController
+) {
 
+    val iconPainter = painterResource(id = R.drawable.icon_map)
+
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
+            .clickable {
+                navController.navigate(route = "${Navigation.UserOperationsScreen.route}/${index}")
+            }
+    ) {
+        Column(
+            modifier = Modifier
+                .clip(RoundedCornerShape(25.dp))
+                .background(MaterialTheme.colorScheme.secondaryContainer)
+                .fillMaxWidth()
+                .height(120.dp)
+                .padding(vertical = 12.dp, horizontal = 16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Image(
+                    painter = iconPainter,
+                    contentDescription = user.userName,
+                    modifier = Modifier.width(60.dp)
+                )
+
+                Column {
+                    Text(
+                        text = user.userName,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        text = user.email,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
+}
 

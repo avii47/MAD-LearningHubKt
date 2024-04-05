@@ -21,23 +21,47 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.mad_learninghubkt.courseDataList
+import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.ui.theme.Purple40
 import com.example.mad_learninghubkt.ui.theme.PurpleStart
+import com.example.mad_learninghubkt.userData
+import com.example.mad_learninghubkt.util.SharedViewModel
 
+var newCourseData = CoursesItem(
+    cid = 0,
+    title = "",
+    overview = "",
+    level = "",
+    duration = 0,
+    fee = 0,
+    max = 0,
+    publishedDate = "",
+    closingDate = "",
+    startingDate = "",
+    branches = "",
+    image = 0,
+    category = ""
+)
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun AddCourse() {
+fun AddCourse(navController: NavController, sharedViewModel: SharedViewModel) {
 
     Scaffold {padding ->
 
@@ -48,7 +72,7 @@ fun AddCourse() {
                 .verticalScroll(rememberScrollState())
         ) {
             AddCourseDetailsSection1()
-            AddCourseDetailsBtnSection()
+            AddCourseDetailsBtnSection(sharedViewModel, navController)
         }
     }
 }
@@ -56,6 +80,18 @@ fun AddCourse() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCourseDetailsSection1(){
+
+    var courseTitle: String by remember { mutableStateOf("") }
+    var overview: String by remember { mutableStateOf("") }
+    var level: String by remember { mutableStateOf("") }
+    var duration: String by remember { mutableStateOf("") }
+    var fee: String by remember { mutableStateOf("") }
+    var max: String by remember { mutableStateOf("") }
+    var publishedDate: String by remember { mutableStateOf("") }
+    var closingDate: String by remember { mutableStateOf("") }
+    var startingDate: String by remember { mutableStateOf("") }
+    var branches: String by remember { mutableStateOf("") }
+    var category: String by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -74,8 +110,56 @@ fun AddCourseDetailsSection1(){
             Spacer(modifier = Modifier.height(25.dp))
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = courseTitle,
+                onValueChange = {
+                     courseTitle = it
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                label = { Text(text = "Course Title") },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Purple40,
+                    unfocusedBorderColor = PurpleStart,
+                    focusedLabelColor = Purple40,
+                    unfocusedLabelColor = PurpleStart,
+                    cursorColor = Color.Transparent,
+                ),
+                shape = RoundedCornerShape(30.dp),
+                textStyle = TextStyle(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 18.sp
+                )
+            )
+
+            OutlinedTextField(
+                value = category,
+                onValueChange = {
+                    category = it
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                label = { Text(text = "Course Category") },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Purple40,
+                    unfocusedBorderColor = PurpleStart,
+                    focusedLabelColor = Purple40,
+                    unfocusedLabelColor = PurpleStart,
+                    cursorColor = Color.Transparent,
+                ),
+                shape = RoundedCornerShape(30.dp),
+                textStyle = TextStyle(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 18.sp
+                )
+            )
+
+            OutlinedTextField(
+                value = overview,
+                onValueChange = {
+                    overview = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -84,8 +168,7 @@ fun AddCourseDetailsSection1(){
                     focusedBorderColor = Purple40,
                     unfocusedBorderColor = PurpleStart,
                     focusedLabelColor = Purple40,
-                    unfocusedLabelColor = PurpleStart,
-                    cursorColor = Color.Transparent,
+                    unfocusedLabelColor = PurpleStart
                 ),
                 shape = RoundedCornerShape(30.dp),
                 textStyle = TextStyle(
@@ -95,8 +178,10 @@ fun AddCourseDetailsSection1(){
             )
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = duration,
+                onValueChange = {
+                    duration = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -105,8 +190,7 @@ fun AddCourseDetailsSection1(){
                     focusedBorderColor = Purple40,
                     unfocusedBorderColor = PurpleStart,
                     focusedLabelColor = Purple40,
-                    unfocusedLabelColor = PurpleStart,
-                    cursorColor = Color.Transparent,
+                    unfocusedLabelColor = PurpleStart
                 ),
                 shape = RoundedCornerShape(30.dp),
                 textStyle = TextStyle(
@@ -116,8 +200,10 @@ fun AddCourseDetailsSection1(){
             )
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = fee,
+                onValueChange = {
+                    fee = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -126,8 +212,7 @@ fun AddCourseDetailsSection1(){
                     focusedBorderColor = Purple40,
                     unfocusedBorderColor = PurpleStart,
                     focusedLabelColor = Purple40,
-                    unfocusedLabelColor = PurpleStart,
-                    cursorColor = Color.Transparent,
+                    unfocusedLabelColor = PurpleStart
                 ),
                 shape = RoundedCornerShape(30.dp),
                 textStyle = TextStyle(
@@ -137,8 +222,10 @@ fun AddCourseDetailsSection1(){
             )
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = max,
+                onValueChange = {
+                    max = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -147,8 +234,7 @@ fun AddCourseDetailsSection1(){
                     focusedBorderColor = Purple40,
                     unfocusedBorderColor = PurpleStart,
                     focusedLabelColor = Purple40,
-                    unfocusedLabelColor = PurpleStart,
-                    cursorColor = Color.Transparent,
+                    unfocusedLabelColor = PurpleStart
                 ),
                 shape = RoundedCornerShape(30.dp),
                 textStyle = TextStyle(
@@ -158,8 +244,10 @@ fun AddCourseDetailsSection1(){
             )
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = publishedDate,
+                onValueChange = {
+                     publishedDate = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -168,8 +256,7 @@ fun AddCourseDetailsSection1(){
                     focusedBorderColor = Purple40,
                     unfocusedBorderColor = PurpleStart,
                     focusedLabelColor = Purple40,
-                    unfocusedLabelColor = PurpleStart,
-                    cursorColor = Color.Transparent,
+                    unfocusedLabelColor = PurpleStart
                 ),
                 shape = RoundedCornerShape(30.dp),
                 textStyle = TextStyle(
@@ -179,8 +266,10 @@ fun AddCourseDetailsSection1(){
             )
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = closingDate,
+                onValueChange = {
+                     closingDate = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -189,8 +278,7 @@ fun AddCourseDetailsSection1(){
                     focusedBorderColor = Purple40,
                     unfocusedBorderColor = PurpleStart,
                     focusedLabelColor = Purple40,
-                    unfocusedLabelColor = PurpleStart,
-                    cursorColor = Color.Transparent,
+                    unfocusedLabelColor = PurpleStart
                 ),
                 shape = RoundedCornerShape(30.dp),
                 textStyle = TextStyle(
@@ -200,8 +288,10 @@ fun AddCourseDetailsSection1(){
             )
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = startingDate,
+                onValueChange = {
+                     startingDate = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -210,8 +300,7 @@ fun AddCourseDetailsSection1(){
                     focusedBorderColor = Purple40,
                     unfocusedBorderColor = PurpleStart,
                     focusedLabelColor = Purple40,
-                    unfocusedLabelColor = PurpleStart,
-                    cursorColor = Color.Transparent,
+                    unfocusedLabelColor = PurpleStart
                 ),
                 shape = RoundedCornerShape(30.dp),
                 textStyle = TextStyle(
@@ -221,8 +310,10 @@ fun AddCourseDetailsSection1(){
             )
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = branches,
+                onValueChange = {
+                      branches = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -231,8 +322,7 @@ fun AddCourseDetailsSection1(){
                     focusedBorderColor = Purple40,
                     unfocusedBorderColor = PurpleStart,
                     focusedLabelColor = Purple40,
-                    unfocusedLabelColor = PurpleStart,
-                    cursorColor = Color.Transparent,
+                    unfocusedLabelColor = PurpleStart
                 ),
                 shape = RoundedCornerShape(30.dp),
                 textStyle = TextStyle(
@@ -242,10 +332,33 @@ fun AddCourseDetailsSection1(){
             )
         }
     }
+
+    if(duration != "" && fee != "" && max != ""){
+
+        newCourseData = CoursesItem(
+            cid = courseDataList.last().cid + 1,
+            title = courseTitle,
+            category = category,
+            overview = overview,
+            level = level,
+            duration = duration.toInt(),
+            fee = fee.toInt(),
+            max = max.toInt(),
+            publishedDate = publishedDate,
+            closingDate = closingDate,
+            startingDate = startingDate,
+            branches = branches,
+            image = 0
+        )
+    }
+
+
 }
 
 @Composable
-fun AddCourseDetailsBtnSection(){
+fun AddCourseDetailsBtnSection(sharedViewModel: SharedViewModel, navController: NavController){
+
+    val context = LocalContext.current
 
     Row(
         modifier = Modifier
@@ -257,7 +370,9 @@ fun AddCourseDetailsBtnSection(){
     ) {
         Button(modifier = Modifier
             .width(150.dp),
-            onClick = { /* Handle register */ }) {
+            onClick = {
+                sharedViewModel.saveNewCourse(courseData = newCourseData, context = context, navController)
+            }) {
             Text("Add Course")
         }
     }
