@@ -50,8 +50,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.data.UserData
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
 import com.example.mad_learninghubkt.ui.theme.BlueStart
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import java.util.Calendar
 
 var userData = UserData(
@@ -63,6 +61,7 @@ var userData = UserData(
     email = "",
     gender = "",
     mobileNo = "",
+    enrolledCourses = emptyList(),
     password = ""
 )
 
@@ -389,6 +388,7 @@ fun FormSection(navController: NavController){
                 email = email,
                 gender = gender,
                 mobileNo = mobileNo,
+                enrolledCourses = emptyList(),
                 password = password
             )
 

@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.mad_learninghubkt.Admin.selectedCID
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
 import com.example.mad_learninghubkt.ui.theme.BlueStart
 import com.example.mad_learninghubkt.ui.theme.GreenEnd2
@@ -53,11 +55,12 @@ import com.example.mad_learninghubkt.ui.theme.GreenStart2
 import com.example.mad_learninghubkt.ui.theme.Purple80
 import com.example.mad_learninghubkt.ui.theme.PurpleGrey80
 import com.example.mad_learninghubkt.ui.theme.background
+import com.example.mad_learninghubkt.util.SharedViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
-fun PaymentScreen(navController: NavHostController = rememberNavController()) {
+fun PaymentScreen(navController: NavHostController = rememberNavController(), sharedViewModel: SharedViewModel) {
 
     Scaffold(
         bottomBar = {
@@ -72,7 +75,7 @@ fun PaymentScreen(navController: NavHostController = rememberNavController()) {
         ) {
             PaymentHeadingSection()
             PaymentCardSection()
-            PaymentBtnSection(navController)
+            PaymentBtnSection(navController, sharedViewModel)
         }
     }
 }
@@ -274,7 +277,10 @@ fun PaymentCardSection(){
 }
 
 @Composable
-fun PaymentBtnSection(navController: NavController){
+fun PaymentBtnSection(navController: NavController, sharedViewModel: SharedViewModel){
+
+    val context = LocalContext.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -285,7 +291,11 @@ fun PaymentBtnSection(navController: NavController){
     ) {
         Button(modifier = Modifier
             .width(120.dp),
-            onClick = { /* Handle register */ }) {
+            onClick = {
+                if (currentUserData != null) {
+                    sharedViewModel.enrollUserInCourse(currentUserData.email, enrollCid.toString(), context)
+                }
+            }) {
             Text("Next")
         }
     }

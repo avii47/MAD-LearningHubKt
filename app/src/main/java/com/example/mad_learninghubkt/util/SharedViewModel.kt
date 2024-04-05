@@ -1,5 +1,6 @@
 package com.example.mad_learninghubkt.util
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -7,21 +8,22 @@ import android.widget.Toast.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.mad_learninghubkt.Admin.selectedBranchNo
 import com.example.mad_learninghubkt.Navigation
 import com.example.mad_learninghubkt.data.BranchesItem
 import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.data.UserData
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+
+
 
 class SharedViewModel() : ViewModel() {
 
@@ -87,6 +89,7 @@ class SharedViewModel() : ViewModel() {
         val email = document.getString("email") ?: ""
         val gender = document.getString("gender") ?: ""
         val mobileNo = document.getString("mobileNo") ?: ""
+        val enrolledCoursesList = document.get("enrolled courses") as? List<String> ?: emptyList()
         val password = document.getString("password") ?: ""
 
         // Create an instance of UserData using the retrieved data
@@ -99,6 +102,7 @@ class SharedViewModel() : ViewModel() {
             email = email,
             gender = gender,
             mobileNo = mobileNo,
+            enrolledCourses = enrolledCoursesList,
             password = password
         )
         UserDataStore.setUserData(userData)
@@ -217,6 +221,7 @@ class SharedViewModel() : ViewModel() {
                     val email = document.getString("email") ?: ""
                     val gender = document.getString("gender") ?: ""
                     val mobileNo = document.getString("mobileNo") ?: ""
+                    val enrolledCoursesList = document.get("enrolled courses") as? List<String> ?: emptyList()
                     val password = document.getString("password") ?: ""
 
                     val userItem = UserData(
@@ -228,15 +233,14 @@ class SharedViewModel() : ViewModel() {
                         email = email,
                         gender = gender,
                         mobileNo = mobileNo,
-                        password =password
+                        enrolledCourses = enrolledCoursesList,
+                        password = password
                     )
 
                     if(userName != "Admin"){
                         AllUsersDataStore.setAllUsersData(userItem)
                     }
-
                 }
-
 
             } catch (e: Exception) {
                 // Handle exceptions
@@ -244,6 +248,20 @@ class SharedViewModel() : ViewModel() {
                 throw e
             }
         }
+    }
+
+    fun enrollUserInCourse(userId: String, courseId: String, context: Context) {
+        val db = Firebase.firestore
+        val userRef = db.collection("users").document(userId)
+
+        userRef.update("enrolled courses", FieldValue.arrayUnion(courseId))
+            .addOnSuccessListener {
+                Log.d(TAG, "User enrolled in course successfully.")
+                Toast.makeText(context, "Successfully enrolled", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error enrolling user in course: ${e.message}", e)
+            }
     }
 
     fun saveNewCourse(

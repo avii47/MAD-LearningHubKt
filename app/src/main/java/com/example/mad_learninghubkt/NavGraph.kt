@@ -177,7 +177,7 @@ fun SetupHomeNavGraph(
         composable(
             route = Navigation.PaymentScreen.route
         ) {
-            PaymentScreen(navController)
+            PaymentScreen(navController, sharedViewModel)
         }
     }
 }
