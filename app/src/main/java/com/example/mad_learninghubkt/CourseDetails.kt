@@ -65,6 +65,8 @@ import com.example.mad_learninghubkt.ui.theme.Purple80
 import com.example.mad_learninghubkt.ui.theme.PurpleGrey80
 import com.example.mad_learninghubkt.ui.theme.PurpleStart
 
+var enrollCid = 0
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 //@Preview
 @Composable
@@ -111,6 +113,7 @@ fun CourseCardSection(courseId: Int) {
     val selectedCourse = courseDataList[courseId]
     //val iconPainter = painterResource(id = selectedCourse.image)
     val iconPainter = painterResource(id = R.drawable.java)
+    enrollCid = selectedCourse.cid
 
     Box(
         modifier = Modifier

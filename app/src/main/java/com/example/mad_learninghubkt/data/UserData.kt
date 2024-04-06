@@ -1,9 +1,6 @@
 package com.example.mad_learninghubkt.data
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-data class UserData (
+data class UserData(
     val userName: String,
     val address: String,
     val livingCity: String,
@@ -12,6 +9,7 @@ data class UserData (
     val email: String,
     val gender: String,
     val mobileNo: String,
+    val enrolledCourses: List<String>,
     val password: String
 )
 
