@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -23,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -82,12 +82,13 @@ fun DashboardContent(navController: NavController){
                 modifier = Modifier.padding(8.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.add_course_icon),
-                    contentDescription = "Add Course"
+                    modifier = Modifier.size(80.dp),
+                    painter = painterResource(id = R.drawable.ic_course_section),
+                    contentDescription = "course section"
                 )
 
                 Text(
-                    text = "Courses",
+                    text = "Course Section",
                     fontSize = 17.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onBackground
@@ -120,12 +121,13 @@ fun DashboardContent(navController: NavController){
                 modifier = Modifier.padding(8.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.profile_icon),
-                    contentDescription = "Add Course"
+                    modifier = Modifier.size(80.dp),
+                    painter = painterResource(id = R.drawable.ic_user_section),
+                    contentDescription = "user section"
                 )
 
                 Text(
-                    text = "Users",
+                    text = "User Section",
                     fontSize = 17.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onBackground
@@ -157,12 +159,13 @@ fun DashboardContent(navController: NavController){
                 modifier = Modifier.padding(8.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.home_icon),
-                    contentDescription = "Add Course"
+                    modifier = Modifier.size(80.dp),
+                    painter = painterResource(id = R.drawable.ic_branch_section),
+                    contentDescription = "branch section"
                 )
 
                 Text(
-                    text = "Branches",
+                    text = "Branch Section",
                     fontSize = 17.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onBackground

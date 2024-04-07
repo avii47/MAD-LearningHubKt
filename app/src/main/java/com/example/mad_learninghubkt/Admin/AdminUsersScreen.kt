@@ -24,18 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mad_learninghubkt.Navigation
 import com.example.mad_learninghubkt.R
-import com.example.mad_learninghubkt.data.BranchesItem
 import com.example.mad_learninghubkt.data.UserData
 import com.example.mad_learninghubkt.util.AllUsersDataStore
-import com.example.mad_learninghubkt.util.BranchDataStore
-import com.example.mad_learninghubkt.util.CourseDataStore
-import com.example.mad_learninghubkt.util.UserDataStore
 
 val adminUsersDataList = AllUsersDataStore.getAllUsersData()
 
@@ -89,7 +84,7 @@ fun AdminUserItem(
 
     Box(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(vertical = 6.dp, horizontal = 12.dp)
             .clickable {
                 navController.navigate(route = "${Navigation.UserOperationsScreen.route}/${index}")
             }

@@ -25,7 +25,7 @@ fun BottomNavGraph(navController: NavHostController, sharedViewModel: SharedView
 
             lateinit var profileNavController: NavHostController
             profileNavController = rememberNavController()
-            SetupProfileNavGraph(navController = profileNavController)
+            SetupProfileNavGraph(navController = profileNavController, sharedViewModel)
         }
     }
 }

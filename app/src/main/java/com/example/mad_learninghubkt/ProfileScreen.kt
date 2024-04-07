@@ -123,22 +123,6 @@ fun MyAccountSection(navController: NavController) {
     }
 }
 
-//val mycourses = listOf(
-//    CoursesItem(
-//        title = "Python Programming",
-//        level = "Beginner",
-//        duration = 30,
-//        image = R.drawable.python
-//    ),
-//
-//    CoursesItem(
-//        title = "Java Programming",
-//        level = "Intermediate",
-//        duration = 45,
-//        image = R.drawable.java
-//    ),
-//)
-
 @Composable
 fun GeneralSection(navController: NavController) {
     Text(

@@ -2,7 +2,6 @@ package com.example.mad_learninghubkt
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,20 +31,30 @@ fun GetStartedScreen(navController: NavHostController = rememberNavController())
     Scaffold {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             StudentIllustration()
+
             Text(
-                text = "Begin your learning journey effortlessly with Colombo City Main Campus",
+                text = "Begin your learning journey effortlessly with",
                 style = TextStyle(
                     fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 150.dp)
+            )
+
+            Text(
+                text = "Colombo City Main Campus",
+                style = TextStyle(
+                    fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
                 ),
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(top = 15.dp, bottom = 150.dp)
             )
             Button(
                 onClick = {
