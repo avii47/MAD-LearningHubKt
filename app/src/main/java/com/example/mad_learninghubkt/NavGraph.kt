@@ -59,11 +59,11 @@ fun SetupNavGraph1(
             MainScreen(sharedViewModel = sharedViewModel)
         }
 
-        composable(
-            route = Navigation.PersonalDetails.route
-        ) {
-            PersonalDetailsScreen()
-        }
+//        composable(
+//            route = Navigation.PersonalDetails.route
+//        ) {
+//            PersonalDetailsScreen()
+//        }
 
         composable(
             route = Navigation.AdminDashboardScreen.route
@@ -129,7 +129,8 @@ fun SetupNavGraph1(
 
 @Composable
 fun SetupProfileNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    sharedViewModel: SharedViewModel
 ) {
     NavHost(
         navController = navController,
@@ -145,7 +146,7 @@ fun SetupProfileNavGraph(
         composable(
             route = Navigation.PersonalDetails.route
         ) {
-            PersonalDetailsScreen()
+            PersonalDetailsScreen(sharedViewModel)
         }
     }
 }

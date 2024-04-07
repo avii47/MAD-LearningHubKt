@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,11 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.mad_learninghubkt.CourseItem
 import com.example.mad_learninghubkt.Navigation
 import com.example.mad_learninghubkt.R
 import com.example.mad_learninghubkt.data.CoursesItem
@@ -59,7 +58,7 @@ fun AdminCourseScreen(navController: NavController) {
 fun CourseFunctions(navController: NavController){
 
     Text(
-        text = "Courses",
+        text = "Course Section",
         fontSize = 25.sp,
         color = MaterialTheme.colorScheme.onBackground,
         fontWeight = FontWeight.Bold,
@@ -89,8 +88,9 @@ fun CourseFunctions(navController: NavController){
                 modifier = Modifier.padding(8.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.add_course_icon),
-                    contentDescription = "yo"
+                    modifier = Modifier.size(80.dp),
+                    painter = painterResource(id = R.drawable.ic_add_course),
+                    contentDescription = "add course"
                 )
 
                 Text(
@@ -123,7 +123,7 @@ fun AdminCourseItem(
 
     Box(
         modifier = Modifier
-            .padding(vertical = 10.dp, horizontal = 16.dp)
+            .padding(vertical = 6.dp, horizontal = 12.dp)
             .clickable {
                 navController.navigate(route = "${Navigation.CourseOperationsScreen.route}/${index}")
             }

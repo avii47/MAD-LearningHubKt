@@ -23,8 +23,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-
-
 class SharedViewModel() : ViewModel() {
 
     fun saveUserData(
@@ -387,6 +385,39 @@ class SharedViewModel() : ViewModel() {
                 Log.e("UpdateBranch", "Error updating branch: ${e.message}")
                 Toast.makeText(context, "Error updating branch: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    fun UserData.toMap3(): Map<String, Any?> {
+        return mapOf(
+            "username" to userName,
+            "address" to address,
+            "living city" to livingCity,
+            "dob" to dob,
+            "nic" to nic,
+            "email" to email,
+            "gender" to gender,
+            "mobile No" to mobileNo,
+            //"enrolled course" to enrolledCourses,
+            "password" to password
+        )
+    }
+
+    fun updateUser(userData: UserData, context: Context) = CoroutineScope(Dispatchers.IO).launch {
+        val firestore = Firebase.firestore
+        val email = userData.email
+
+        try {
+            firestore.collection("users")
+                .document(email)
+                .update(userData.toMap3())
+                .addOnSuccessListener {
+                    makeText(context, "Successfully updated details", LENGTH_SHORT).show()
+                    Toast.makeText(context, "Successfully updated details", Toast.LENGTH_SHORT).show()
+                    fetchCourseData(context)
+                }
+        } catch (e: Exception) {
+            makeText(context, "Error updating user: ${e.message}", LENGTH_SHORT).show()
         }
     }
 

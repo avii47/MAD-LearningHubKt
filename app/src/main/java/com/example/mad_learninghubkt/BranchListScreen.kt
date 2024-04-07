@@ -33,8 +33,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.data.BranchesItem
 import com.example.mad_learninghubkt.util.BranchDataStore
-import com.example.mad_learninghubkt.util.CourseDataStore
-import com.google.android.gms.maps.model.LatLng
 
 val branchDataList = BranchDataStore.getBranchData()
 
@@ -98,7 +96,7 @@ fun BranchItem(
 
     Box(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(vertical = 6.dp, horizontal = 16.dp)
             .clickable {
                 navController.navigate(route = "${Navigation.BranchDetails.route}/${index}")
             }
@@ -109,7 +107,7 @@ fun BranchItem(
                 .background(MaterialTheme.colorScheme.secondaryContainer)
                 .fillMaxWidth()
                 .height(120.dp)
-                .padding(vertical = 12.dp, horizontal = 16.dp),
+                .padding(vertical = 6.dp, horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
