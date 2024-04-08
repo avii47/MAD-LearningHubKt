@@ -28,17 +28,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.mad_learninghubkt.Navigation
 import com.example.mad_learninghubkt.R
 import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.util.CourseDataStore
 
-val adminCourseDataList = CourseDataStore.getCourseData()
+var adminCourseDataList = emptyList<CoursesItem>()
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 //@Preview
 @Composable
 fun AdminCourseScreen(navController: NavController) {
+
+    adminCourseDataList = emptyList<CoursesItem>()
+    adminCourseDataList = CourseDataStore.getCourseData()
 
     Scaffold {padding ->
 
@@ -118,8 +122,7 @@ fun AdminCourseItem(
     course: CoursesItem,
     navController: NavController
 ) {
-    //val iconPainter = painterResource(id = course.image)
-    val iconPainter = painterResource(id = R.drawable.java)
+    val iconPainter = rememberImagePainter(course.image)
 
     Box(
         modifier = Modifier

@@ -13,4 +13,8 @@ object AllUsersDataStore {
     fun getAllUsersData(): List<UserData> {
         return usersList.toList()
     }
+
+    fun clearUserData() {
+        usersList.clear()
+    }
 }

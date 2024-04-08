@@ -69,6 +69,7 @@ import androidx.compose.ui.unit.toSize
 import androidx.core.content.FileProvider
 import coil.compose.rememberImagePainter
 import com.example.mad_learninghubkt.R
+import com.example.mad_learninghubkt.currentUserData
 import com.example.mad_learninghubkt.data.UserData
 import com.example.mad_learninghubkt.getGradient
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
@@ -76,6 +77,7 @@ import com.example.mad_learninghubkt.ui.theme.BlueStart
 import com.example.mad_learninghubkt.util.SharedViewModel
 import com.example.mad_learninghubkt.util.UserDataStore
 import com.example.mad_learninghubkt.validateAddress
+import com.example.mad_learninghubkt.validateDob
 import com.example.mad_learninghubkt.validateEmail
 import com.example.mad_learninghubkt.validateGender
 import com.example.mad_learninghubkt.validateLivingCity
@@ -100,9 +102,11 @@ var updatedUserData = UserData(
     gender = "",
     mobileNo = "",
     enrolledCourses = emptyList(),
-    password = ""
+    password = "",
+    image = 0
 )
 
+var selectedImg = 0
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 //@Preview
@@ -156,7 +160,8 @@ fun TopCardSection() {
                 .padding(top = 120.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val drawableUri = getDrawableUri(LocalContext.current, R.drawable.user_img1)
+            val pictureResourceId = R.drawable.user_icon
+            val drawableUri = getDrawableUri(LocalContext.current, currentUserData?.image ?: pictureResourceId)
             UserImage(drawableUri)
         }
 
@@ -361,7 +366,7 @@ fun ContentSection() {
                     value = dob,
                     onValueChange = {
                         dob = it
-                        //isDobValid = validateDob(it)
+                        isDobValid = validateDob(it)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -711,7 +716,8 @@ fun ContentSection() {
                     gender = gender,
                     mobileNo = mobileNo,
                     enrolledCourses = currentUserData.enrolledCourses,
-                    password = password
+                    password = password,
+                    image = 0
                 )
 
             } else {
@@ -752,12 +758,14 @@ fun BtnSection(sharedViewModel: SharedViewModel){
             .fillMaxWidth()
             .padding(start = 60.dp),
     ) {
-        Button(onClick = { /* Handle update */ }) {
+        Button(onClick = {
+            sharedViewModel.updateUser(updatedUserData, context)
+        }) {
             Text("Update")
         }
         Spacer(modifier = Modifier.width(20.dp))
         Button(onClick = {
-            sharedViewModel.updateUser(updatedUserData, context)
+
         }) {
             Text("Delete my account")
         }

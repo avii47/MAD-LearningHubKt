@@ -92,7 +92,7 @@ fun BranchItem(
     navController: NavController
 ) {
 
-    val iconPainter = painterResource(id = R.drawable.icon_map)
+    val iconPainter = painterResource(id = R.drawable.ic_default_branch)
 
     Box(
         modifier = Modifier

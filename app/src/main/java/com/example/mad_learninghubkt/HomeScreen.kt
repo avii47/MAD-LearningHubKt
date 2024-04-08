@@ -41,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.mad_learninghubkt.data.CategoriesItem
 import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
@@ -324,14 +325,13 @@ fun CourseItem(
     course: CoursesItem,
     navController: NavController
 ) {
-    //val iconPainter = painterResource(id = course.image)
-    val iconPainter = painterResource(id = R.drawable.java)
+    val iconPainter = rememberImagePainter(course.image)
 
     Box(
         modifier = Modifier
             .padding(vertical = 10.dp, horizontal = 16.dp)
             .clickable {
-                navController.navigate(route = "${Navigation.CourseDetails.route}/${index}")
+                navController.navigate(route = "${Navigation.CourseDetails.route}/${course.cid}")
             }
     ) {
         Column(
@@ -367,14 +367,14 @@ fun CourseItem(
                         text = course.level,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.SemiBold
                     )
 
                     Text(
                         text = course.duration.toString() + " hours",
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }

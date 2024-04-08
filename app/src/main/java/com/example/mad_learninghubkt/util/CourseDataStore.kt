@@ -12,4 +12,8 @@ object CourseDataStore {
     fun getCourseData(): List<CoursesItem> {
         return courseList.toList()
     }
+
+    fun clearCourseData() {
+        courseList.clear()
+    }
 }

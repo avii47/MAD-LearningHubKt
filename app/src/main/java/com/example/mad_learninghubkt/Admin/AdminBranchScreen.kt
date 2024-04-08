@@ -33,12 +33,15 @@ import com.example.mad_learninghubkt.R
 import com.example.mad_learninghubkt.data.BranchesItem
 import com.example.mad_learninghubkt.util.BranchDataStore
 
-val adminBranchDataList = BranchDataStore.getBranchData()
+var adminBranchDataList = emptyList<BranchesItem>()
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 //@Preview
 @Composable
 fun AdminBranchScreen(navController: NavController) {
+
+    adminBranchDataList = emptyList<BranchesItem>()
+    adminBranchDataList = BranchDataStore.getBranchData()
 
     Scaffold {padding ->
 
@@ -118,8 +121,7 @@ fun AdminBranchItem(
     branch: BranchesItem,
     navController: NavController
 ) {
-
-    val iconPainter = painterResource(id = R.drawable.icon_map)
+    val iconPainter = painterResource(id = R.drawable.ic_default_branch)
 
     Box(
         modifier = Modifier

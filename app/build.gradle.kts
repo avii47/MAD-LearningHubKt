@@ -99,4 +99,5 @@ dependencies {
     implementation ("com.sun.mail:android-activation:1.6.7")
 
     implementation("androidx.compose.material:material:1.0.0-beta01")
+    implementation ("io.coil-kt:coil-compose:1.3.2")
 }

@@ -1,12 +1,8 @@
 package com.example.mad_learninghubkt
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,55 +12,37 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
 import com.example.mad_learninghubkt.data.CoursesItem
-import com.example.mad_learninghubkt.ui.theme.BlueEnd
-import com.example.mad_learninghubkt.ui.theme.BlueStart
 import com.example.mad_learninghubkt.ui.theme.Purple40
 import com.example.mad_learninghubkt.ui.theme.Purple80
 import com.example.mad_learninghubkt.ui.theme.PurpleGrey80
 import com.example.mad_learninghubkt.ui.theme.PurpleStart
 
+var selectedCourse: CoursesItem? = null
 var enrollCid = 0
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -110,10 +88,21 @@ fun CourseHeadingSection(){
 
 @Composable
 fun CourseCardSection(courseId: Int) {
-    val selectedCourse = courseDataList[courseId]
-    //val iconPainter = painterResource(id = selectedCourse.image)
-    val iconPainter = painterResource(id = R.drawable.java)
-    enrollCid = selectedCourse.cid
+
+    courseDataList.forEachIndexed { index, courseItem ->
+        if (courseItem.cid == courseId) {
+            selectedCourse = courseItem
+            return@forEachIndexed
+        }
+    }
+
+    var iconPainter = rememberImagePainter(R.drawable.ic_default_course)
+
+    if (selectedCourse != null) {
+        iconPainter = rememberImagePainter(selectedCourse!!.image)
+    } else {
+    }
+    enrollCid = selectedCourse?.cid ?: 0
 
     Box(
         modifier = Modifier
@@ -133,12 +122,14 @@ fun CourseCardSection(courseId: Int) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(modifier = Modifier.width(200.dp),
-                    text = selectedCourse.title,
-                    color = Color.White,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                selectedCourse?.let {
+                    Text(modifier = Modifier.width(200.dp),
+                        text = it.title,
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
 
                 Image(
                     painter = iconPainter,
@@ -155,7 +146,7 @@ fun CourseCardSection(courseId: Int) {
 @Composable
 fun CourseDetailsSection(index: Int){
 
-    val selectedCourse = courseDataList[index]
+    //val selectedCourse = courseDataList[index]
 
     Box(
         modifier = Modifier
@@ -171,7 +162,7 @@ fun CourseDetailsSection(index: Int){
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(modifier = Modifier.fillMaxWidth(),
-                text = selectedCourse.overview,
+                text = selectedCourse?.overview ?: "",
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 13.sp
             )
@@ -179,7 +170,7 @@ fun CourseDetailsSection(index: Int){
 
 
             OutlinedTextField(
-                value = selectedCourse.duration.toString() + " Hours",
+                value = selectedCourse?.duration.toString() + " Hours",
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -201,7 +192,7 @@ fun CourseDetailsSection(index: Int){
             )
 
             OutlinedTextField(
-                value = selectedCourse.fee.toString() +" /=",
+                value = selectedCourse?.fee.toString() +" /=",
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -223,7 +214,7 @@ fun CourseDetailsSection(index: Int){
             )
 
             OutlinedTextField(
-                value = selectedCourse.max.toString() +" students",
+                value = selectedCourse?.max.toString() +" students",
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -245,7 +236,7 @@ fun CourseDetailsSection(index: Int){
             )
 
             OutlinedTextField(
-                value = selectedCourse.publishedDate,
+                value = selectedCourse?.publishedDate ?: "",
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -267,7 +258,7 @@ fun CourseDetailsSection(index: Int){
             )
 
             OutlinedTextField(
-                value = selectedCourse.closingDate,
+                value = selectedCourse?.closingDate ?: "",
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -289,7 +280,7 @@ fun CourseDetailsSection(index: Int){
             )
 
             OutlinedTextField(
-                value = selectedCourse.startingDate,
+                value = selectedCourse?.startingDate ?: "",
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -311,7 +302,7 @@ fun CourseDetailsSection(index: Int){
             )
 
             OutlinedTextField(
-                value = selectedCourse.branches,
+                value = selectedCourse?.branches ?: "",
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()

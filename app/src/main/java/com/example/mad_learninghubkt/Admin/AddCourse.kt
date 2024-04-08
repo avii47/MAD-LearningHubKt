@@ -31,15 +31,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.mad_learninghubkt.R
 import com.example.mad_learninghubkt.courseDataList
 import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.ui.theme.Purple40
 import com.example.mad_learninghubkt.ui.theme.PurpleStart
-import com.example.mad_learninghubkt.userData
 import com.example.mad_learninghubkt.util.SharedViewModel
 
 var newCourseData = CoursesItem(
@@ -333,6 +332,8 @@ fun AddCourseDetailsSection1(){
         }
     }
 
+    val pictureResourceId = R.drawable.ic_default_course
+
     if(duration != "" && fee != "" && max != ""){
 
         newCourseData = CoursesItem(
@@ -348,7 +349,7 @@ fun AddCourseDetailsSection1(){
             closingDate = closingDate,
             startingDate = startingDate,
             branches = branches,
-            image = 0
+            image = pictureResourceId
         )
     }
 

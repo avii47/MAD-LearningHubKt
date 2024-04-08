@@ -4,7 +4,8 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import android.widget.Toast.*
+import android.widget.Toast.LENGTH_SHORT
+import android.widget.Toast.makeText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -35,7 +36,9 @@ class SharedViewModel() : ViewModel() {
             .document(userData.email)
 
         try {
-            fireStoreRef.set(userData)
+            val userMap = userData.toMap3()
+
+            fireStoreRef.set(userMap)
                 .addOnSuccessListener {
                     makeText(context, "Successfully saved data", LENGTH_SHORT).show()
                 }
@@ -52,7 +55,7 @@ class SharedViewModel() : ViewModel() {
                 if (document.exists()) {
                     val userData = document.data
                     val storedPassword = userData?.get("password") as? String
-                    val userRole = userData?.get("userName") as? String
+                    val userRole = userData?.get("username") as? String
 
                     if (storedPassword == password) {
 
@@ -79,16 +82,17 @@ class SharedViewModel() : ViewModel() {
     private fun handleSuccessfulLogin(document: DocumentSnapshot) {
 
         // Retrieve user data from Firestore document
-        val userName = document.getString("userName") ?: ""
+        val userName = document.getString("username") ?: ""
         val address = document.getString("address") ?: ""
-        val livingCity = document.getString("livingCity") ?: ""
+        val livingCity = document.getString("living city") ?: ""
         val dob = document.getString("dob") ?: ""
         val nic = document.getString("nic") ?: ""
         val email = document.getString("email") ?: ""
         val gender = document.getString("gender") ?: ""
-        val mobileNo = document.getString("mobileNo") ?: ""
+        val mobileNo = document.getString("mobile No") ?: ""
         val enrolledCoursesList = document.get("enrolled courses") as? List<String> ?: emptyList()
         val password = document.getString("password") ?: ""
+        val image = (document.get("image") as? Long)?.toInt() ?: 0
 
         // Create an instance of UserData using the retrieved data
         val userData = UserData(
@@ -101,7 +105,8 @@ class SharedViewModel() : ViewModel() {
             gender = gender,
             mobileNo = mobileNo,
             enrolledCourses = enrolledCoursesList,
-            password = password
+            password = password,
+            image = image
         )
         UserDataStore.setUserData(userData)
     }
@@ -113,6 +118,7 @@ class SharedViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 val querySnapshot = collectionRef.get().await()
+                CourseDataStore.clearCourseData()
 
                 for (document in querySnapshot.documents) {
                     val cid = (document.get("cid") as? Long)?.toInt() ?: 0
@@ -166,6 +172,7 @@ class SharedViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 val querySnapshot = collectionRef.get().await()
+                BranchDataStore.clearBranchData()
 
                 for (document in querySnapshot.documents) {
                     val branchNo = document.get("branch No") as? String ?: ""
@@ -209,18 +216,20 @@ class SharedViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 val querySnapshot = collectionRef.get().await()
+                AllUsersDataStore.clearUserData()
 
                 for (document in querySnapshot.documents) {
-                    val userName = document.getString("userName") ?: ""
+                    val userName = document.getString("username") ?: ""
                     val address = document.getString("address") ?: ""
-                    val livingCity = document.getString("livingCity") ?: ""
+                    val livingCity = document.getString("living city") ?: ""
                     val dob = document.getString("dob") ?: ""
                     val nic = document.getString("nic") ?: ""
                     val email = document.getString("email") ?: ""
                     val gender = document.getString("gender") ?: ""
-                    val mobileNo = document.getString("mobileNo") ?: ""
+                    val mobileNo = document.getString("mobile No") ?: ""
                     val enrolledCoursesList = document.get("enrolled courses") as? List<String> ?: emptyList()
                     val password = document.getString("password") ?: ""
+                    val image = (document.get("image") as? Long)?.toInt() ?: 0
 
                     val userItem = UserData(
                         userName = userName,
@@ -232,7 +241,8 @@ class SharedViewModel() : ViewModel() {
                         gender = gender,
                         mobileNo = mobileNo,
                         enrolledCourses = enrolledCoursesList,
-                        password = password
+                        password = password,
+                        image = image
                     )
 
                     if(userName != "Admin"){
@@ -273,12 +283,14 @@ class SharedViewModel() : ViewModel() {
             .document(courseData.cid.toString())
 
         try {
-            fireStoreRef.set(courseData)
+            val courseMap = courseData.toMap()
+
+            fireStoreRef.set(courseMap)
                 .addOnSuccessListener {
                     makeText(context, "Successfully added new course", LENGTH_SHORT).show()
                     Toast.makeText(context, "Successfully added new course", Toast.LENGTH_SHORT).show()
-                    navController.popBackStack()
                     fetchCourseData(context)
+                    navController.navigate(route = Navigation.AdminCoursesScreen.route)
                 }
         } catch (e: Exception) {
             makeText(context, e.message, LENGTH_SHORT).show()
@@ -296,12 +308,15 @@ class SharedViewModel() : ViewModel() {
             .document(branchData.branchNo)
 
         try {
-            fireStoreRef.set(branchData)
+            val branchMap = branchData.toMap2()
+
+            // Set the mapped data to Firestore
+            fireStoreRef.set(branchMap)
                 .addOnSuccessListener {
                     makeText(context, "Successfully added new branch", LENGTH_SHORT).show()
                     Toast.makeText(context, "Successfully added new branch", Toast.LENGTH_SHORT).show()
-                    navController.popBackStack()
                     fetchBranchData(context)
+                    navController.navigate(route = Navigation.AdminBranchScreen.route)
                 }
         } catch (e: Exception) {
             makeText(context, e.message, LENGTH_SHORT).show()
@@ -398,7 +413,6 @@ class SharedViewModel() : ViewModel() {
             "email" to email,
             "gender" to gender,
             "mobile No" to mobileNo,
-            //"enrolled course" to enrolledCourses,
             "password" to password
         )
     }
@@ -437,7 +451,7 @@ class SharedViewModel() : ViewModel() {
                     makeText(context, "Successfully deleted course", LENGTH_SHORT)
                         .show()
                     fetchCourseData(context)
-                    navController.popBackStack()
+                    navController.navigate(route = Navigation.AdminCoursesScreen.route)
                 }
         } catch (e: Exception) {
             makeText(context, e.message, LENGTH_SHORT).show()
@@ -460,7 +474,7 @@ class SharedViewModel() : ViewModel() {
                     makeText(context, "Successfully deleted branch", LENGTH_SHORT)
                         .show()
                     fetchBranchData(context)
-                    navController.popBackStack()
+                    navController.navigate(route = Navigation.AdminBranchScreen.route)
                 }
         } catch (e: Exception) {
             makeText(context, e.message, LENGTH_SHORT).show()
@@ -482,7 +496,7 @@ class SharedViewModel() : ViewModel() {
                 .addOnSuccessListener {
                     makeText(context, "Successfully deleted user", LENGTH_SHORT)
                         .show()
-                    navController.popBackStack()
+                    navController.navigate(route = Navigation.AdminUsersScreen.route)
                 }
         } catch (e: Exception) {
             makeText(context, e.message, LENGTH_SHORT).show()

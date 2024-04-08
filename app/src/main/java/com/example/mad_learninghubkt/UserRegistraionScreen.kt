@@ -25,6 +25,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,6 +55,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -76,7 +79,8 @@ var userData = UserData(
     gender = "",
     mobileNo = "",
     enrolledCourses = emptyList(),
-    password = ""
+    password = "",
+    image = 0
 )
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -136,7 +140,8 @@ fun FormSection(navController: NavController){
     var email: String by remember { mutableStateOf("") }
     var gender: String by remember { mutableStateOf("") }
     var mobileNo: String by remember { mutableStateOf("") }
-    var password: String by remember { mutableStateOf("") }
+    var password1: String by remember { mutableStateOf("") }
+    var password2: String by remember { mutableStateOf("") }
 
     var isNameValid by remember { mutableStateOf(true) }
     var isAddressValid by remember { mutableStateOf(true) }
@@ -146,7 +151,8 @@ fun FormSection(navController: NavController){
     var isemailValid by remember { mutableStateOf(true) }
     var isGenderValid by remember { mutableStateOf(true) }
     var isMobileNoValid by remember { mutableStateOf(true) }
-    var isePasswordValid by remember { mutableStateOf(true) }
+    var isePasswordValid1 by remember { mutableStateOf(true) }
+    var isePasswordValid2 by remember { mutableStateOf(true) }
 
     val errorIcon = rememberVectorPainter(Icons.Filled.Error)
     val errorIconTint = Color.Red
@@ -323,7 +329,7 @@ fun FormSection(navController: NavController){
                 value = dob,
                 onValueChange = {
                     dob = it
-                    //isDobValid = validateDob(it)
+                    isDobValid = validateDob(it)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -549,11 +555,14 @@ fun FormSection(navController: NavController){
                 }
             )
 
+            var passwordVisible1 by remember { mutableStateOf(false) }
+            var passwordVisible2 by remember { mutableStateOf(false) }
+
             OutlinedTextField(
-                value = password,
+                value = password1,
                 onValueChange = {
-                    password = it
-                    isePasswordValid = validatePassword(it)
+                    password1 = it
+                    isePasswordValid1 = validatePassword(it)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -567,16 +576,20 @@ fun FormSection(navController: NavController){
                 ),
                 shape = RoundedCornerShape(30.dp),
                 textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (passwordVisible1) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = {
                     // Handle done action if needed
                 }),
-                isError = !isePasswordValid,
+                isError = !isePasswordValid1,
                 singleLine = true,
                 maxLines = 1,
                 trailingIcon = {
-                    if (!isePasswordValid) {
+                    val icon = if (passwordVisible1) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
+                    IconButton(onClick = { passwordVisible1 = !passwordVisible1 }) {
+                        Icon(icon, contentDescription = null)
+                    }
+                    if (!isePasswordValid1) {
                         Icon(
                             painter = errorIcon,
                             contentDescription = null,
@@ -586,6 +599,50 @@ fun FormSection(navController: NavController){
                     }
                 }
             )
+
+            OutlinedTextField(
+                value = password2,
+                onValueChange = {
+                    password2 = it
+                    isePasswordValid2 = validateConPassword(it,password1)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                label = { Text(text = "Confirm Password")},
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = BlueStart,
+                    unfocusedBorderColor = BlueEnd,
+                    focusedLabelColor = BlueStart,
+                    unfocusedLabelColor = BlueEnd
+                ),
+                shape = RoundedCornerShape(30.dp),
+                textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground, fontSize = 18.sp),
+                visualTransformation = if (passwordVisible2) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = {
+                    // Handle done action if needed
+                }),
+                isError = !isePasswordValid2,
+                singleLine = true,
+                maxLines = 1,
+                trailingIcon = {
+                    val icon = if (passwordVisible2) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
+                    IconButton(onClick = { passwordVisible2 = !passwordVisible2 }) {
+                        Icon(icon, contentDescription = null)
+                    }
+                    if (!isePasswordValid2) {
+                        Icon(
+                            painter = errorIcon,
+                            contentDescription = null,
+                            tint = errorIconTint,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+            )
+
+            val pictureResourceId = R.drawable.ic_user_section
 
             userData = UserData(
                 userName = userName,
@@ -597,7 +654,8 @@ fun FormSection(navController: NavController){
                 gender = gender,
                 mobileNo = mobileNo,
                 enrolledCourses = emptyList(),
-                password = password
+                password = password2,
+                image = pictureResourceId
             )
 
             Row(
@@ -623,58 +681,8 @@ fun FormSection(navController: NavController){
     }
 }
 
-@Composable
-fun genderDropDownMenu() {
-
-    var expanded by remember { mutableStateOf(false) }
-    val suggestions = listOf("Kotlin", "Java", "Dart", "Python")
-    var selectedText by remember { mutableStateOf("") }
-
-    var textfieldSize by remember { mutableStateOf(Size.Zero)}
-
-    val icon = if (expanded)
-        Icons.Filled.KeyboardArrowUp
-    else
-        Icons.Filled.KeyboardArrowDown
-
-
-    Column(Modifier.padding(20.dp)) {
-        OutlinedTextField(
-            value = selectedText,
-            onValueChange = { selectedText = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .onGloballyPositioned { coordinates ->
-                    //This value is used to assign to the DropDown the same width
-                    textfieldSize = coordinates.size.toSize()
-                },
-            label = {Text("Label")},
-            trailingIcon = {
-                Icon(icon,"contentDescription",
-                    Modifier.clickable { expanded = !expanded })
-            }
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .width(with(LocalDensity.current){textfieldSize.width.toDp()})
-        ) {
-            suggestions.forEach { label ->
-                DropdownMenuItem(onClick = {
-                    selectedText = label
-                    expanded = false
-                }) {
-                    Text(text = label)
-                }
-            }
-        }
-    }
-
-}
-
 fun validateName(name: String): Boolean {
-    return name.isNotBlank() && name.matches(Regex("[a-zA-Z]+")) && name.length < 3
+    return name.isNotBlank() && name.matches(Regex("[a-zA-Z]+")) && name.length > 3
 }
 fun validateAddress(address: String): Boolean {
     return address.isNotBlank() && address.length > 5
@@ -684,12 +692,13 @@ fun validateLivingCity(city: String): Boolean {
     val cityRegex = Regex("[a-zA-Z]+") // Allows only alphabetic characters
     return cityRegex.matches(city) && city.isNotBlank()
 }
-//private fun validateDob(dob: Date): Boolean {
-//    return dob.isNotBlank() && !dob.matches(Regex("[a-zA-Z]+"))
-//}
+fun validateDob(dob: String): Boolean {
+    val regex = """^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\d{4}$""".toRegex()
+    return regex.matches(dob)
+}
 fun validateNIC(nic: String): Boolean {
     // Regular expression pattern for NIC validation in Sri Lanka
-    val nicRegex = Regex("\\d{9}[Vv]")
+    val nicRegex = Regex("\\d{12}")
     return nicRegex.matches(nic) && nic.isNotBlank()
 }
 fun validateEmail(email: String): Boolean {
@@ -721,6 +730,11 @@ fun validatePassword(password: String): Boolean {
             password.contains(lowercaseRegex) &&
             password.contains(digitRegex) &&
             password.isNotBlank()
+}
+
+fun validateConPassword(password2: String, password1: String): Boolean {
+    return password1 == password2
+
 }
 
 //function pick the date from calendar

@@ -77,6 +77,7 @@ fun GetStartedScreen(navController: NavHostController = rememberNavController())
 @Composable
 fun StudentIllustration() {
     Image(
+        modifier = Modifier.padding(20.dp),
         painter = painterResource(id = R.drawable.landingimg),
         contentDescription = "Landing Page image"
     )
