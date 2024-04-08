@@ -13,4 +13,8 @@ object BranchDataStore {
     fun getBranchData(): List<BranchesItem> {
         return branchList.toList()
     }
+
+    fun clearBranchData() {
+        branchList.clear()
+    }
 }

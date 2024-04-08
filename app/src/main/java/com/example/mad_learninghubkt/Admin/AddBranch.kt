@@ -34,11 +34,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.mad_learninghubkt.R
 import com.example.mad_learninghubkt.data.BranchesItem
 import com.example.mad_learninghubkt.ui.theme.GreenEnd
 import com.example.mad_learninghubkt.ui.theme.GreenStart
 import com.example.mad_learninghubkt.util.SharedViewModel
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.GeoPoint
 
 val defaultGeoPoint = GeoPoint(0.0, 0.0)
@@ -297,6 +297,8 @@ fun AddNewBranchSection() {
         return GeoPoint(lat, lon)
     }
 
+    val pictureResourceId = R.drawable.ic_default_branch
+
     newBranchData = BranchesItem(
         branchName = branchName,
         branchNo = branchNo,
@@ -306,11 +308,9 @@ fun AddNewBranchSection() {
         contactNo = contactNo,
         courses = courses,
         latLng = createGeoPoint(),
-        image = 0
+        image = pictureResourceId
     )
 }
-
-
 
 @Composable
 fun AddNewBranchBtnSection(sharedViewModel: SharedViewModel, navController: NavController){

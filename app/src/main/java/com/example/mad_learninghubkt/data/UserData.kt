@@ -10,6 +10,7 @@ data class UserData(
     val gender: String,
     val mobileNo: String,
     val enrolledCourses: List<String>,
-    val password: String
+    val password: String,
+    val image: Int
 )
 

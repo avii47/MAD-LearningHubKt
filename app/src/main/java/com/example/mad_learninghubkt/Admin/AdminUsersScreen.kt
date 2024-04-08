@@ -32,12 +32,15 @@ import com.example.mad_learninghubkt.R
 import com.example.mad_learninghubkt.data.UserData
 import com.example.mad_learninghubkt.util.AllUsersDataStore
 
-val adminUsersDataList = AllUsersDataStore.getAllUsersData()
+var adminUsersDataList = emptyList<UserData>()
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 //@Preview
 @Composable
 fun AdminUsersScreen(navController: NavController) {
+
+    adminUsersDataList = emptyList<UserData>()
+    adminUsersDataList = AllUsersDataStore.getAllUsersData()
 
     Scaffold {padding ->
 
@@ -80,7 +83,7 @@ fun AdminUserItem(
     navController: NavController
 ) {
 
-    val iconPainter = painterResource(id = R.drawable.icon_map)
+    val iconPainter = painterResource(id = R.drawable.user_icon)
 
     Box(
         modifier = Modifier
