@@ -44,6 +44,7 @@ import com.example.mad_learninghubkt.ui.theme.PurpleStart
 
 var selectedCourse: CoursesItem? = null
 var enrollCid = 0
+var enrolledCourse = ""
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 //@Preview
@@ -103,6 +104,7 @@ fun CourseCardSection(courseId: Int) {
     } else {
     }
     enrollCid = selectedCourse?.cid ?: 0
+    enrolledCourse = selectedCourse?.title ?: ""
 
     Box(
         modifier = Modifier

@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.ui.theme.MADLearningHubKtTheme
@@ -30,9 +29,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MADLearningHubKtTheme {
-
-//                FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
-//                FirebaseAnalytics.getInstance(this).setUserProperty("debug", "true");
 
                 navController = rememberNavController()
                 SetupNavGraph1(
