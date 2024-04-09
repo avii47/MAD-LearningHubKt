@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -27,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
 import com.example.mad_learninghubkt.data.CoursesItem
 import com.example.mad_learninghubkt.data.UserData
 import com.example.mad_learninghubkt.ui.theme.BlueEnd
@@ -48,6 +47,7 @@ val currentUserData: UserData? = UserDataStore.getUserData()
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(navController: NavHostController = rememberNavController()) {
+
     Scaffold {
         Column {
             MyAccountSection(navController)
@@ -168,8 +168,7 @@ fun EnrolledCourseItem(
     course: CoursesItem,
     navController: NavController
 ) {
-    //val iconPainter = painterResource(id = course.image)
-    val iconPainter = painterResource(id = R.drawable.java)
+    val iconPainter = rememberImagePainter(course.image)
 
     Box(
         modifier = Modifier

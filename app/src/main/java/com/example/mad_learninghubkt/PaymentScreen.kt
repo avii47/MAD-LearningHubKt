@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,28 +33,32 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.mad_learninghubkt.Admin.selectedCID
-import com.example.mad_learninghubkt.ui.theme.BlueEnd
-import com.example.mad_learninghubkt.ui.theme.BlueStart
 import com.example.mad_learninghubkt.ui.theme.GreenEnd2
 import com.example.mad_learninghubkt.ui.theme.GreenStart2
-import com.example.mad_learninghubkt.ui.theme.Purple80
-import com.example.mad_learninghubkt.ui.theme.PurpleGrey80
-import com.example.mad_learninghubkt.ui.theme.background
 import com.example.mad_learninghubkt.util.SharedViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.Properties
+import javax.mail.Authenticator
+import javax.mail.Message
+import javax.mail.MessagingException
+import javax.mail.PasswordAuthentication
+import javax.mail.Session
+import javax.mail.Transport
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 //@Preview
@@ -294,9 +297,45 @@ fun PaymentBtnSection(navController: NavController, sharedViewModel: SharedViewM
             onClick = {
                 if (currentUserData != null) {
                     sharedViewModel.enrollUserInCourse(currentUserData.email, enrollCid.toString(), context)
+                    sendEnrollAcknowledgeEmail(currentUserData.email, enrolledCourse)
                 }
             }) {
             Text("Next")
+        }
+    }
+}
+
+fun sendEnrollAcknowledgeEmail(email: String, course: String) {
+    // Start a coroutine on the IO dispatcher
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val properties = Properties().apply {
+                put("mail.smtp.host", "smtp.gmail.com") // Change to your SMTP server
+                put("mail.smtp.port", "587") // Change to your SMTP port
+                put("mail.smtp.auth", "true")
+                put("mail.smtp.starttls.enable", "true")
+            }
+
+            val username = "ashankaize81@gmail.com" // Change to your email username
+            val password = "alxw peum gtuu nfgx" // Change to your email password
+
+            val session = Session.getInstance(properties, object : Authenticator() {
+                override fun getPasswordAuthentication(): PasswordAuthentication {
+                    return PasswordAuthentication(username, password)
+                }
+            })
+
+            val message = MimeMessage(session)
+            message.setFrom(InternetAddress(username))
+            message.addRecipient(Message.RecipientType.TO, InternetAddress(email))
+            message.subject = "Course Enroll Acknowledgement"
+            message.setText("You have successfully enrolled $course in Learning Hub")
+
+            Transport.send(message)
+
+            println("Acknowledgement email sent successfully to $email")
+        } catch (e: MessagingException) {
+            e.printStackTrace()
         }
     }
 }
