@@ -316,8 +316,8 @@ fun sendEnrollAcknowledgeEmail(email: String, course: String) {
                 put("mail.smtp.starttls.enable", "true")
             }
 
-            val username = "ashankaize81@gmail.com" // Change to your email username
-            val password = "alxw peum gtuu nfgx" // Change to your email password
+            val username = "example@gmail.com" // Change to your email username
+            val password = "#### #### #### ####" // Change to your email genarated password
 
             val session = Session.getInstance(properties, object : Authenticator() {
                 override fun getPasswordAuthentication(): PasswordAuthentication {
