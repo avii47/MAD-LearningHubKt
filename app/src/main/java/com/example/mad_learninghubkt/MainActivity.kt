@@ -27,6 +27,8 @@ class MainActivity : ComponentActivity() {
         sharedViewModel.fetchAllUsersData(context)
 
         super.onCreate(savedInstanceState)
+        //PaymentConfiguration.init(applicationContext, "pk_test_51NfN7RJdkwpdiEIiViPOq1vCZMBeduWLq02jAELt0uH23HmfQvzJsbPX8mw9Q1LpJbVgsnkTb4nF9dQe1h1wFbbj000FIwBjM6")
+
         setContent {
             MADLearningHubKtTheme {
 
@@ -35,10 +37,7 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     sharedViewModel = sharedViewModel
                 )
-
-
             }
-
         }
     }
 }

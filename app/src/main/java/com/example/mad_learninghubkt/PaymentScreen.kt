@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +46,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mad_learninghubkt.ui.theme.GreenEnd2
 import com.example.mad_learninghubkt.ui.theme.GreenStart2
 import com.example.mad_learninghubkt.util.SharedViewModel
+import com.google.pay.button.ButtonType
+import com.google.pay.button.PayButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,10 +61,24 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "RestrictedApi")
 //@Preview
 @Composable
 fun PaymentScreen(navController: NavHostController = rememberNavController(), sharedViewModel: SharedViewModel) {
+
+    val context = LocalContext.current
+//    val walletOptions = Wallet.WalletOptions.Builder()
+//        .setEnvironment(WalletConstants.ENVIRONMENT_TEST) // Use test environment
+//        .build()
+//
+//    val paymentsClient: PaymentsClient = Wallet.getPaymentsClient(
+//        context,
+//        walletOptions
+//    )
+
+
+
 
     Scaffold(
         bottomBar = {
@@ -280,7 +295,10 @@ fun PaymentCardSection(){
 }
 
 @Composable
-fun PaymentBtnSection(navController: NavController, sharedViewModel: SharedViewModel){
+fun PaymentBtnSection(
+    navController: NavController,
+    sharedViewModel: SharedViewModel
+){
 
     val context = LocalContext.current
 
@@ -292,32 +310,100 @@ fun PaymentBtnSection(navController: NavController, sharedViewModel: SharedViewM
         horizontalArrangement = Arrangement.Center
 
     ) {
-        Button(modifier = Modifier
-            .width(120.dp),
-            onClick = {
-                if (currentUserData != null) {
-                    sharedViewModel.enrollUserInCourse(currentUserData.email, enrollCid.toString(), context)
-                    sendEnrollAcknowledgeEmail(currentUserData.email, enrolledCourse)
-                }
-            }) {
-            Text("Next")
-        }
+        PayButton(
+            onClick = { println("Button clicked") },
+            allowedPaymentMethods = "<JSON serialized allowedPaymentMethods>",
+            modifier = Modifier.width(300.dp),
+            type = ButtonType.Book,
+        )
     }
+//        Button(modifier = Modifier
+//            .width(120.dp),
+//            onClick = {
+//                if (currentUserData != null) {
+//                    sharedViewModel.enrollUserInCourse(currentUserData.email, enrollCid.toString(), context)
+//                    sendEnrollAcknowledgeEmail(currentUserData.email, enrolledCourse)
+//
+//
+//
+//
+////                    //googlePayButton.callOnClick()
+////
+////                    val paymentDataTask = paymentsClient.loadPaymentData(paymentRequest)
+////                    paymentDataTask.addOnCompleteListener { task ->
+////                        if (task.isSuccessful) {
+////                            val paymentData = task.result
+////                            // Process payment data
+////                        } else {
+////                            // Handle payment failure
+////                            val exception = task.exception
+////                            Log.e("PaymentError", "Error loading payment data", exception)
+////                        }
+////                    }
+//                }
+//            }) {
+//            Text("Next")
+//        }
+//    }
 }
+
+//val paymentRequest = createPaymentDataRequest()
+//val tokenizationParameters = createTokenizationParameters()
+//
+//fun createPaymentDataRequest(): PaymentDataRequest {
+//    val tokenizationParameters: PaymentMethodTokenizationParameters = createTokenizationParameters()
+//    return PaymentDataRequest.newBuilder()
+//        .setTransactionInfo(
+//            TransactionInfo.newBuilder()
+//                .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
+//                .setTotalPrice("10.00") // Total price of the transaction
+//                .setCurrencyCode("USD")
+//                .build()
+//        )
+//        .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_CARD)
+//        .setCardRequirements(
+//            CardRequirements.newBuilder()
+//                .addAllowedCardNetworks(
+//                    listOf(
+//                        WalletConstants.CARD_NETWORK_VISA,
+//                        WalletConstants.CARD_NETWORK_MASTERCARD
+//                    )
+//                )
+//                .build()
+//        )
+//        .setPaymentMethodTokenizationParameters(tokenizationParameters)
+//        .setEmailRequired(true)
+//        .setPhoneNumberRequired(true)
+//        .build()
+//}
+//
+//fun createTokenizationParameters(): PaymentMethodTokenizationParameters {
+//    return PaymentMethodTokenizationParameters.newBuilder()
+//        .setPaymentMethodTokenizationType(
+//            WalletConstants.PAYMENT_METHOD_TOKENIZATION_TYPE_PAYMENT_GATEWAY
+//        )
+//        .addParameter("gateway", "Stripe")
+//        .addParameter("gatewayMerchantId", "acct_1NfN7RJdkwpdiEIi")
+//        .build()
+//}
+
+
+
+
 
 fun sendEnrollAcknowledgeEmail(email: String, course: String) {
     // Start a coroutine on the IO dispatcher
     CoroutineScope(Dispatchers.IO).launch {
         try {
             val properties = Properties().apply {
-                put("mail.smtp.host", "smtp.gmail.com") // Change to your SMTP server
-                put("mail.smtp.port", "587") // Change to your SMTP port
+                put("mail.smtp.host", "smtp.gmail.com")
+                put("mail.smtp.port", "587")
                 put("mail.smtp.auth", "true")
                 put("mail.smtp.starttls.enable", "true")
             }
 
-            val username = "ashankaize81@gmail.com" // Change to your email username
-            val password = "alxw peum gtuu nfgx" // Change to your email password
+            val username = "ashankaize81@gmail.com"
+            val password = "alxw peum gtuu nfgx"
 
             val session = Session.getInstance(properties, object : Authenticator() {
                 override fun getPasswordAuthentication(): PasswordAuthentication {

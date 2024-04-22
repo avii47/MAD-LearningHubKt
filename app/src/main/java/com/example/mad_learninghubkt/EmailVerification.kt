@@ -163,7 +163,7 @@ fun  OtpCodeInput(sharedViewModel: SharedViewModel, navController: NavController
                         if (index < 5) {
                             focusRequesters[index + 1].requestFocus()
                         } else {
-                            keyboardController?.hide() // Hide the keyboard after entering the last digit
+                            keyboardController?.hide()
                         }
                     }
                 )
@@ -206,14 +206,14 @@ fun sendEmail(email: String, otp: String) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
             val properties = Properties().apply {
-                put("mail.smtp.host", "smtp.gmail.com") // Change to your SMTP server
-                put("mail.smtp.port", "587") // Change to your SMTP port
+                put("mail.smtp.host", "smtp.gmail.com")
+                put("mail.smtp.port", "587")
                 put("mail.smtp.auth", "true")
                 put("mail.smtp.starttls.enable", "true")
             }
 
-            val username = "ashankaize81@gmail.com" // Change to your email username
-            val password = "alxw peum gtuu nfgx" // Change to your email password
+            val username = "ashankaize81@gmail.com"
+            val password = "alxw peum gtuu nfgx"
 
             val session = Session.getInstance(properties, object : Authenticator() {
                 override fun getPasswordAuthentication(): PasswordAuthentication {

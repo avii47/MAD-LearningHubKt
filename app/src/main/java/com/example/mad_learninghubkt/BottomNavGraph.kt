@@ -1,6 +1,5 @@
 package com.example.mad_learninghubkt
 
-import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,7 +21,6 @@ fun BottomNavGraph(navController: NavHostController, sharedViewModel: SharedView
             SetupBranchNavGraph(navController = branchNavController)
         }
         composable(BottomBarScreen.Account.route) {
-
             lateinit var profileNavController: NavHostController
             profileNavController = rememberNavController()
             SetupProfileNavGraph(navController = profileNavController, sharedViewModel)

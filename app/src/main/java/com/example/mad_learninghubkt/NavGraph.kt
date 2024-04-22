@@ -1,7 +1,6 @@
 package com.example.mad_learninghubkt
 
 import PersonalDetailsScreen
-import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -58,12 +57,6 @@ fun SetupNavGraph1(
         ) {
             MainScreen(sharedViewModel = sharedViewModel)
         }
-
-//        composable(
-//            route = Navigation.PersonalDetails.route
-//        ) {
-//            PersonalDetailsScreen()
-//        }
 
         composable(
             route = Navigation.AdminDashboardScreen.route

@@ -63,26 +63,26 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2024.02.01"))
+    implementation(platform("androidx.compose:compose-bom:2024.04.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("com.google.firebase:firebase-analytics:21.5.1")
+    implementation("com.google.firebase:firebase-analytics:21.6.1")
     implementation("com.google.firebase:firebase-database:20.3.1")
-    implementation("com.google.firebase:firebase-firestore:24.10.3")
+    implementation("com.google.firebase:firebase-firestore:24.11.0")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.02.01"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
-    implementation("androidx.compose.material:material-icons-extended:1.6.2")
+    implementation("androidx.compose.material:material-icons-extended:1.6.5")
     implementation("com.google.maps.android:maps-compose:4.3.3")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")
@@ -90,14 +90,25 @@ dependencies {
     //implementation ("com.github.DogusTeknoloji:compose-date-picker:1.1.0")
     implementation ("io.coil-kt:coil-compose:1.4.0")
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
     implementation ("com.sun.mail:android-mail:1.6.6")
     implementation ("com.sun.mail:android-activation:1.6.7")
 
-    implementation("androidx.compose.material:material:1.0.0-beta01")
-    implementation ("io.coil-kt:coil-compose:1.3.2")
+    implementation("androidx.compose.material:material:1.6.5")
+    implementation ("io.coil-kt:coil-compose:1.4.0")
+
+
+    implementation ("com.google.android.gms:play-services-wallet:19.3.0")
+    implementation ("com.google.pay.button:compose-pay-button:0.1.3")
+    implementation ("com.stripe:stripe-android:20.40.3")
+
+    implementation ("androidx.fragment:fragment-ktx:1.6.2")
+
+    implementation("androidx.appcompat:appcompat:1.6.1")
+
+    implementation ("dev.shreyaspatil.EasyUpiPayment:EasyUpiPayment:3.0.3")
 }
